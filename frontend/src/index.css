@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 219 67% 14%;
+    --card: 0 0% 100%;
+    --card-foreground: 219 67% 14%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 219 67% 14%;
+    --primary: 219 67% 14%; /* navy #0C2041 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 219 67% 14%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 33 50% 51%; /* gold #C38D41 */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 33 50% 51%;
+    --chart-1: 33 50% 51%;
+    --chart-2: 219 67% 18%;
+    --chart-3: 199 89% 48%;
+    --chart-4: 271 91% 65%;
+    --chart-5: 142 71% 45%;
+    --radius: 0.25rem;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  html, body { @apply bg-background text-foreground font-sans antialiased; }
+  h1, h2, h3, h4, h5 { font-family: "Manrope", "Inter", system-ui, sans-serif; letter-spacing: -0.015em; }
+  ::selection { background: #C38D41; color: white; }
+}
+
+@layer utilities {
+  .text-overline { @apply text-xs font-semibold uppercase tracking-[0.18em] text-gold-500; }
+  .container-x { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
+  .section-y { @apply py-20 md:py-20; }
+  .grid-pattern {
+    background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .scroll-fade { opacity: 0; transform: translateY(20px); animation: fade-up 0.7s ease-out forwards; }
+}
+
+@layer base {
+  [data-debug-wrapper="true"] { display: contents !important; }
+  [data-debug-wrapper="true"] > * {
+    margin-left: inherit; margin-right: inherit; margin-top: inherit; margin-bottom: inherit;
+    padding-left: inherit; padding-right: inherit; padding-top: inherit; padding-bottom: inherit;
+    column-gap: inherit; row-gap: inherit; gap: inherit;
+    border-left-width: inherit; border-right-width: inherit; border-top-width: inherit; border-bottom-width: inherit;
+    border-left-style: inherit; border-right-style: inherit; border-top-style: inherit; border-bottom-style: inherit;
+    border-left-color: inherit; border-right-color: inherit; border-top-color: inherit; border-bottom-color: inherit;
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "theme_and_archetype": {
+    "theme": "Light Theme (with heavy Deep Navy anchor sections)",
+    "archetype": "Archetype 4 (Swiss & High-Contrast) mixed with Archetype 5 (Luxury/Premium)",
+    "description": "A high-end, authoritative logistics and supply chain aesthetic. Evokes scale, trust, and speed. Uses Deep Navy for structural weight, pure White/Off-White for content clarity, and industrial Action Orange for conversion elements."
+  },
+  "typography": {
+    "font_families": {
+      "headings": "'Cabinet Grotesk', sans-serif",
+      "body": "'IBM Plex Sans', sans-serif",
+      "mono": "'JetBrains Mono', monospace"
+    },
+    "scale_rules": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-none font-bold",
+      "h2": "text-3xl sm:text-4xl tracking-tight leading-tight font-bold",
+      "h3": "text-2xl sm:text-3xl tracking-tight leading-snug font-semibold",
+      "h4": "text-xl font-semibold",
+      "body_large": "text-lg leading-relaxed text-slate-700",
+      "body": "text-base leading-relaxed text-slate-600",
+      "overline": "text-sm font-bold uppercase tracking-[0.2em] text-orange-500"
+    },
+    "installation_instructions": "Add Cabinet Grotesk (from Fontshare or local assets) and IBM Plex Sans (Google Fonts) to the document head and tailwind configuration."
+  },
+  "color_palette": {
+    "primary": {
+      "navy_900": "#0A192F",
+      "navy_800": "#112240",
+      "navy_700": "#1E3A8A"
+    },
+    "accent": {
+      "orange_500": "#FF5A00",
+      "orange_600": "#E65100"
+    },
+    "neutral": {
+      "white": "#FFFFFF",
+      "gray_50": "#F8FAFC",
+      "gray_100": "#F1F5F9",
+      "gray_200": "#E2E8F0",
+      "gray_800": "#1E293B",
+      "gray_900": "#0F172A"
+    },
+    "application": {
+      "background": "#FFFFFF",
+      "surface": "#F8FAFC",
+      "text_main": "#0F172A",
+      "text_muted": "#475569",
+      "border": "#E2E8F0",
+      "cta_background": "#FF5A00",
+      "cta_text": "#FFFFFF",
+      "dark_section_bg": "#0A192F",
+      "dark_section_text": "#F8FAFC"
+    }
+  },
+  "layout_and_spacing": {
+    "spacing_scale": "Use generous spacing: p-8, p-12 for internal card paddings. py-24 or py-32 for section vertical padding.",
+    "container_max_width": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "grids": {
+      "marketing": "Mode A 'Tetris' Grid: Asymmetrical spans. grid-cols-1 md:grid-cols-12 gap-8.",
+      "dashboard": "Mode B 'Control Room' Grid: Dense. grid-cols-1 md:grid-cols-4 gap-4 or gap-6."
+    },
+    "border_radius": "Subtle and sharp: Use rounded-sm (2px) or rounded-none (0px) to maintain the B2B corporate 'Swiss' edge. Avoid fully rounded pill buttons except for floating elements."
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-orange-500 text-white font-semibold hover:bg-orange-600 transition-colors duration-200 px-6 py-3 rounded-none shadow-sm",
+      "secondary": "bg-navy-900 text-white font-semibold hover:bg-navy-800 transition-colors duration-200 px-6 py-3 rounded-none shadow-sm",
+      "outline": "border-2 border-navy-900 text-navy-900 font-semibold hover:bg-navy-900 hover:text-white transition-colors duration-200 px-6 py-3 rounded-none"
+    },
+    "cards": {
+      "marketing": "bg-white border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 p-8 rounded-sm",
+      "dashboard": "bg-white border border-slate-200 shadow-none p-6 rounded-sm"
+    },
+    "header": {
+      "style": "Crystal Glassmorphism on marketing pages: sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-gray-200/50."
+    },
+    "forms": {
+      "style": "Shadcn UI inputs heavily customized. Sharp corners (rounded-sm), focus:ring-2 focus:ring-orange-500 focus:border-transparent."
+    },
+    "logo_placeholder": {
+      "style": "Clean bordered box: w-12 h-12 border-2 border-navy-900 flex items-center justify-center font-bold text-navy-900 tracking-wider bg-white."
+    }
+  },
+  "motion_and_interactions": {
+    "hover_states": "Cards lift slightly (-translate-y-1) with increased shadow. Buttons transition background color.",
+    "scroll_animations": "Use framer-motion for staggered fade-up entrances on long pages (Services, Expertise).",
+    "marquee": "Use react-fast-marquee for the client logo section. Low speed, smooth drift."
+  },
+  "icons_and_assets": {
+    "library": "lucide-react (Standard, sharp icons matching the corporate feel)",
+    "stroke_width": "1.5 or 2 (Keep consistent)"
+  },
+  "pages": {
+    "home": {
+      "description": "Main landing page focusing on scale and trust.",
+      "sections": [
+        "Hero Slider: Full viewport height (h-screen). Rotating background images (ships, trucks, planes) with a bg-navy-900/50 overlay. Large Cabinet Grotesk H1. Two CTAs: 'Get a Quote' (Primary) and 'Our Solutions' (Outline White).",
+        "Trust Bar: Statistics (TEUs shipped, Countries, On-time delivery) on a solid Deep Navy background.",
+        "Services Highlight: 4-column bento grid previewing freight, warehousing, customs, last-mile.",
+        "Quick Quote: Inline form section.",
+        "Client Marquee: Logos drifting seamlessly."
+      ]
+    },
+    "about_us": {
+      "description": "Company narrative.",
+      "sections": [
+        "Hero: Deep Navy background, no image, massive typography 'Delivering the Future of Freight'.",
+        "Mission/Vision/Values: 3-column asymmetric layout. High contrast.",
+        "Team/Corporate image gallery: Structured bento grid of office/meeting photos."
+      ]
+    },
+    "services": {
+      "description": "Detailed breakdown of capabilities.",
+      "sections": [
+        "Listings for Freight, Warehousing, Customs, Last Mile. Use alternating left/right layout with large imagery and ample whitespace."
+      ]
+    },
+    "expertise": {
+      "description": "Industry-specific solutions.",
+      "sections": [
+        "Cards for Automotive, Pharmaceutical, Retail Commerce, Technologies. Dark theme section to differentiate from Services."
+      ]
+    },
+    "clients": {
+      "description": "Partnerships and trust building.",
+      "sections": [
+        "Grid of partner logos, testimonials, case study highlights."
+      ]
+    },
+    "blog": {
+      "description": "SEO optimized blog listings.",
+      "sections": [
+        "Grid of articles. Clean, typography-first cards. 'Read More' links with arrow icons."
+      ]
+    },
+    "contact_us": {
+      "description": "Lead capture and locations.",
+      "sections": [
+        "Two-column layout: Left side contact details/locations, Right side Get-in-Touch form. Floating WhatsApp button fixed to bottom right of viewport across the site."
+      ]
+    },
+    "admin_dashboard": {
+      "description": "CMS and analytics interface for staff.",
+      "sections": [
+        "Layout: Left sidebar (Dark Navy), Top header (White), Content area (Gray-50).",
+        "Dashboard Overview: KPIs (Leads, Active Quotes, Blog Views).",
+        "Blog CMS: Table of posts, 'Create New' button, WYSIWYG editor placeholder.",
+        "Lead Management: Data table of captured quotes and contact submissions."
+      ]
+    }
+  },
+  "image_urls": {
+    "hero_slider": [
+      {
+        "url": "https://images.pexels.com/photos/9806482/pexels-photo-9806482.jpeg",
+        "description": "Cargo ship at sea, highly cinematic, perfect for first slide."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1766608422198-5be9ac0aac9e",
+        "description": "White semi-truck on highway, fast moving."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1587293852726-70cdb56c2866",
+        "description": "Warehouse and boxes, logistics depth."
+      }
+    ],
+    "services_and_expertise": [
+      {
+        "url": "https://images.unsplash.com/photo-1605745341112-85968b19335b",
+        "description": "Blue and red cargo ship."
+      },
+      {
+        "url": "https://images.pexels.com/photos/11087837/pexels-photo-11087837.jpeg",
+        "description": "Red semi truck in mountains."
+      },
+      {
+        "url": "https://images.pexels.com/photos/4487383/pexels-photo-4487383.jpeg",
+        "description": "Warehouse workers handling package."
+      }
+    ],
+    "about_us": [
+      {
+        "url": "https://images.pexels.com/photos/12903168/pexels-photo-12903168.jpeg",
+        "description": "Professional team collaborating in office."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1557804506-669a67965ba0",
+        "description": "Corporate meeting."
+      }
+    ],
+    "client_logos": [
+      {
+        "url": "https://images.unsplash.com/photo-1760037028517-e5cc6e3ebd3e",
+        "description": "Abstract Apple sports logo placeholder."
+      },
+      {
+        "url": "https://images.pexels.com/photos/21898300/pexels-photo-21898300.jpeg",
+        "description": "Pexels logo placeholder."
+      },
+      {
+        "url": "https://images.pexels.com/photos/26576975/pexels-photo-26576975.jpeg",
+        "description": "Favour media logo."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1669220339242-c12788586902",
+        "description": "Abstract minimal logo."
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "You are building a hybrid_fullstack app. Both the marketing site and admin dashboard live in the same app. Separate routes (e.g., /admin for dashboard).",
+    "Use standard HTML+Tailwind for complex marketing layouts. Use Shadcn components for forms, tables, and the entire Admin Dashboard.",
+    "Implement a logo placeholder using a div containing the text 'CFF' with a thick navy border.",
+    "Integrate a hero slider on the Home page using Framer Motion or a standard carousel library. Add a dark overlay so text is highly readable.",
+    "Use data-testid on ALL interactive elements (e.g., data-testid='quote-submit-btn').",
+    "Implement a floating WhatsApp button at the bottom right with position: fixed.",
+    "Ensure 'Cabinet Grotesk' is applied to H1-H4, and 'IBM Plex Sans' to body text. If you cannot load them, fallback to standard sans-serif but define the font-family explicitly in tailwind config.",
+    "For the clients logo marquee, use standard images and remove background via CSS mix-blend-mode: multiply if needed, or grayscale them via CSS filter: grayscale(100%)."
+  ]
+}
