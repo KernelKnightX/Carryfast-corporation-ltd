@@ -13,7 +13,7 @@ const WHY = [
 ];
 
 const SERVICES_PREVIEW = [
-  { icon: FileText, t: "Customs Documentation", d: "Complete preparation and filing of import and export documentation, including Bill of Entry, Shipping Bill, Certificate of Origin, and all supporting submissions required for clearance." },
+  { icon: FileText, t: "Documentation Support", d: "Complete customs documentation preparation and verification for imports and exports, ensuring Bills of Entry, Shipping Bills, and licence paperwork are filed accurately and on time." },
   { icon: FileCheck, t: "Customs Clearance", d: "End-to-end customs clearance for air and sea shipments across all major ports, airports, ICDs, and CFS locations in India. We manage the entire process from document filing through to cargo release." },
   { icon: BookOpen, t: "Trade Compliance", d: "Ongoing monitoring of customs notifications, DGFT circulars, and import-export policy updates. We apply current regulatory requirements to your shipments and advise on licensing, restrictions, and compliance obligations." },
 ];
@@ -31,16 +31,16 @@ const ACCREDITATIONS = [
 ];
 
 const INDUSTRY_TILES = [
-  { icon: Cog, t: "Industrial Equipment & Machinery" },
-  { icon: Truck, t: "Automotive & Components" },
+  { icon: Cog, t: "Industrial Equipment" },
+  { icon: Truck, t: "Automotive Components" },
   { icon: FlaskConical, t: "Chemicals & Petrochemicals" },
   { icon: Sun, t: "Energy & Renewables" },
-  { icon: ShoppingBag, t: "Consumer & Hygiene Goods" },
+  { icon: ShoppingBag, t: "Personal Care & Hygiene" },
   { icon: Lightbulb, t: "Electrical & Electronics" },
   { icon: Wrench, t: "Food & Confectionery" },
 ];
 
-const CLIENT_TOP = ["Bridgestone India", "LiuGong India", "HEG Ltd", "Tata International", "L&T", "Mahle India", "Siemens"];
+const CLIENT_TOP = ["Bridgestone India", "LiuGong India", "HEG Ltd", "Tata International", "L&T", "Ralson", "Swara Baby Products Ltd"];
 
 const CLIENT_LOGO_FILE_MAP = {
   "Bridgestone India": "Bridgestone India Pvt Ltd.png",
@@ -48,8 +48,8 @@ const CLIENT_LOGO_FILE_MAP = {
   "HEG Ltd": "HEG Ltd.png",
   "Tata International": "Tata International Ltd.png",
   "L&T": "L&T.png",
-  "Mahle India": "Mahle India.png",
-  "Siemens": "Siemens.png",
+  "Ralson": "Ralson.png",
+  "Swara Baby Products Ltd": "Swara Baby Products Ltd.png",
 };
 
 const TESTIMONIALS_FALLBACK = [
@@ -80,13 +80,11 @@ export default function Home() {
       {/* Why Choose Carry Fast */}
       <section className="section-y bg-white">
         <div className="container-x">
-          <div className="grid md:grid-cols-12 gap-7 items-end mb-8">
-            <div className="md:col-span-7">
-              <div className="text-overline mb-5">Why Choose Carry Fast</div>
-              <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight leading-[1.1] text-navy-900">What Sets Us Apart</h2>
-            </div>
-            <p className="md:col-span-5 text-slate-600 text-base leading-relaxed">
-              Carry Fast has operated through three decades of policy changes, system migrations, and shifting trade regulations. What keeps clients working with us is straightforward: we clear shipments correctly, the first time, on time.
+          <div className="max-w-6xl mb-8">
+            <div className="text-overline mb-5">Why Choose Carry Fast</div>
+            <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight leading-[1.1] text-navy-900">What Sets Us Apart</h2>
+            <p className="mt-6 text-slate-600 text-base leading-relaxed max-w-full lg:max-w-7xl">
+              Carry Fast has operated through three decades of policy changes, system migrations, and shifting trade regulations. What keeps clients working with us is straightforward: we clear shipments correctly, promptly, and efficiently.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -178,15 +176,15 @@ export default function Home() {
       <section className="section-y bg-slate-50">
         <div className="container-x">
           <div className="mb-12">
-            <div className="text-overline mb-5">Industries We Serve</div>
+            <div className="text-overline mb-5">INDUSTRY SOLUTION- </div>
             <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight text-navy-900">Industries We Serve</h2>
             <p className="mt-5 text-slate-600 max-w-3xl leading-relaxed">
               We handle customs clearance across a broad range of industries, each with its own classification requirements, licensing conditions, and documentation standards.
             </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-px bg-slate-200 border border-slate-200">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3">
             {INDUSTRY_TILES.map((it, i) => (
-              <div key={i} data-testid={`industry-tile-${i}`} className="bg-white p-6 text-center hover:bg-navy-900 hover:text-white transition-colors group">
+              <div key={i} data-testid={`industry-tile-${i}`} className="bg-white border border-slate-200 p-6 text-center hover:bg-navy-900 hover:text-white transition-colors group">
                 <it.icon size={26} className="mx-auto text-gold-500" strokeWidth={1.6} />
                 <h4 className="mt-4 font-semibold text-xs leading-snug text-navy-900 group-hover:text-white transition-colors">{it.t}</h4>
               </div>
@@ -207,12 +205,12 @@ export default function Home() {
             <div className="text-overline mb-5">Clients We Serve</div>
             <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight text-navy-900">Trusted By Leading Indian Businesses</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-px bg-slate-200 border border-slate-200">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
             {CLIENT_TOP.map((c, i) => {
               const logoFile = CLIENT_LOGO_FILE_MAP[c];
               const logoSrc = logoFile ? encodeURI(`/logos/${logoFile}`) : null;
               return (
-                <div key={i} data-testid={`client-${i}`} className="bg-white p-6 flex flex-col items-center justify-center text-center min-h-[140px] hover:bg-slate-50 transition-colors group">
+                <div key={i} data-testid={`client-${i}`} className="bg-white border border-slate-200 p-6 flex flex-col items-center justify-center text-center min-h-[140px] hover:bg-slate-50 transition-colors group">
                   {logoSrc ? (
                     <img src={logoSrc} alt={c} className="max-h-12 max-w-full object-contain mb-4" />
                   ) : (
@@ -240,14 +238,21 @@ export default function Home() {
             <p className="mt-4 max-w-3xl text-slate-600 leading-relaxed">{testimonialsSubtitle}</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {testimonials.slice(0, 6).map((item, i) => (
-              <div key={i} data-testid={`testimonial-${i}`} className="bg-white border border-slate-200 p-7 relative">
-                <div className="font-display font-extrabold text-5xl text-gold-500/30 leading-none mb-3">"</div>
-                <p className="text-sm text-navy-900 leading-relaxed">{item.quote}</p>
-                <div className="mt-6 pt-5 border-t border-slate-200 text-sm text-navy-900 font-semibold">{item.author}</div>
-                {item.company ? <div className="text-xs text-slate-500">{item.company}</div> : null}
-              </div>
-            ))}
+            {testimonials.slice(0, 6).map((item, i) => {
+              const authorText = item.author?.replace(/^[\u2014\u2013\-\s]+/, "").trim();
+              const companyText = item.company?.trim();
+              const showCompany = companyText && companyText !== authorText && !authorText?.includes(companyText);
+              return (
+                <div key={i} data-testid={`testimonial-${i}`} className="bg-white border border-slate-200 p-7 relative">
+                  <div className="font-display font-extrabold text-5xl text-gold-500/30 leading-none mb-3">"</div>
+                  <p className="text-sm text-navy-900 leading-relaxed">{item.quote}</p>
+                  <div className="mt-6 pt-5 border-t border-slate-200">
+                    {authorText ? <div className="text-sm text-navy-900 font-semibold">— {authorText}</div> : null}
+                    {showCompany ? <div className="text-xs text-slate-500">{companyText}</div> : null}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -265,9 +270,8 @@ export default function Home() {
             <Link to="/contact" data-testid="bottom-cta-contact" className="inline-flex items-center gap-2 bg-gold-500 text-white px-7 py-4 text-sm font-semibold hover:bg-gold-600 transition-colors">
               Contact Our Team Today <ArrowRight size={16} />
             </Link>
-            <a href={`tel:${(cfg.contact?.phone_urgent || "").replace(/\s+/g, "")}`} className="inline-flex items-center gap-2 bg-gold-500 text-white px-7 py-4 text-sm font-semibold hover:bg-gold-600 transition-colors">
-              {cfg.contact?.phone_urgent || "+91 9300077018"}
-            </a>
+         
+          
           </div>
         </div>
       </section>

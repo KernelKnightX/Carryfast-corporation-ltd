@@ -6,7 +6,7 @@ export const POLICY_TITLES = {
 
 export const DEFAULT_POLICIES = {
   "privacy-policy": {
-    image: "https://images.pexels.com/photos/4487383/pexels-photo-4487383.jpeg",
+    image: "/logos/R112.png",
     subtitle: "How Carry Fast Corporation collects, uses, protects, and retains information submitted through our website and enquiry forms.",
     lastUpdated: "21 June 2026",
     intro: `Carry Fast Corporation ("we", "our", or "us") respects your privacy and is committed to protecting the information you share with us through our website.`,
@@ -67,7 +67,7 @@ Email: info@carryfastcorp.com`,
     ],
   },
   "terms-conditions": {
-    image: "https://images.pexels.com/photos/5668858/pexels-photo-5668858.jpeg",
+    image: "/logos/r113.png",
     subtitle: "The terms that govern use of this website, its customs updates, trade information, and enquiry features.",
     lastUpdated: "21 June 2026",
     intro: "By accessing and using this website, you agree to these Terms & Conditions. If you do not agree, please discontinue use of this website.",
@@ -116,7 +116,7 @@ Email: info@carryfastcorp.com`,
     ],
   },
   "cookie-policy": {
-    image: "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg",
+    image: "/logos/R114.png",
     subtitle: "How cookies and similar technologies support website performance, analytics, security, and user experience.",
     lastUpdated: "21 June 2026",
     intro: "This website uses cookies and similar technologies to operate certain features, understand website traffic, and improve user experience. This policy explains what cookies we use and how you can control them.",

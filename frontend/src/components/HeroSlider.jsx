@@ -43,9 +43,58 @@ export default function HeroSlider() {
       onMouseLeave={() => setPaused(false)}
     >
       {slides.map((sl, idx) => (
-        <div key={idx} className="absolute inset-0 transition-opacity duration-[1400ms]" style={{ opacity: idx === i ? 1 : 0 }}>
-          <img src={sl.image} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-r from-navy-900/95 via-navy-900/80 to-navy-900/50 lg:to-navy-900/40" />
+        <div key={idx} className="absolute inset-0 transition-opacity [transition-duration:1400ms]" style={{ opacity: idx === i ? 1 : 0 }}>
+          {typeof sl.image === "string" && sl.image.startsWith("/logos/") ? (
+            (() => {
+              const path = sl.image.replace(/^\//, ""); // logos/logistic1.jpg
+              const name = path.split("/").pop().replace(/\.[^.]+$/, "");
+              const base = `/logos/${name}`;
+              const isJpg = path.toLowerCase().endsWith(".jpg") || path.toLowerCase().endsWith(".jpeg");
+
+              if (isJpg) {
+                return (
+                  <picture>
+                    <source type="image/avif" srcSet={`${base}-lg.avif 1920w, ${base}-md.avif 1280w, ${base}-sm.avif 800w`} />
+                    <source type="image/webp" srcSet={`${base}-lg.webp 1920w, ${base}-md.webp 1280w, ${base}-sm.webp 800w`} />
+                    <img
+                      src={sl.image}
+                      alt={sl.overline || ""}
+                      className="w-full h-full object-cover"
+                      loading={idx === i ? "eager" : "lazy"}
+                      fetchPriority={idx === i ? "high" : "auto"}
+                      width={1920}
+                      height={1280}
+                      srcSet={`${base}-lg.webp 1920w, ${base}-md.webp 1280w, ${base}-sm.webp 800w`}
+                      sizes="(min-width:1024px) 50vw, 100vw"
+                    />
+                  </picture>
+                );
+              }
+
+              return (
+                <img
+                  src={sl.image}
+                  alt={sl.overline || ""}
+                  className="w-full h-full object-cover"
+                  loading={idx === i ? "eager" : "lazy"}
+                  fetchPriority={idx === i ? "high" : "auto"}
+                  width={1920}
+                  height={1280}
+                />
+              );
+            })()
+          ) : (
+            <img
+              src={sl.image}
+              alt={sl.overline || ""}
+              className="w-full h-full object-cover"
+              loading={idx === i ? "eager" : "lazy"}
+              fetchPriority={idx === i ? "high" : "auto"}
+              width={1920}
+              height={1280}
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-r from-navy-900/65 via-navy-900/35 to-navy-900/0 lg:to-transparent" />
         </div>
       ))}
 
@@ -93,7 +142,6 @@ export default function HeroSlider() {
               <button key={idx} onClick={() => setI(idx)} aria-label={`Slide ${idx + 1}`} data-testid={`hero-dot-${idx}`}
                 className={`h-1 transition-all ${idx === i ? "w-10 bg-gold-500" : "w-4 bg-white/30 hover:bg-white/60"}`} />
             ))}
-            <span className="ml-3 text-[11px] font-mono text-white/50">{String(i + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}</span>
           </div>
           <div className="hidden sm:flex items-center gap-2">
             <button onClick={prev} aria-label="Previous" data-testid="hero-prev" className="w-9 h-9 border border-white/25 text-white hover:bg-gold-500 hover:border-gold-500 transition-colors flex items-center justify-center"><ChevronLeft size={16} /></button>

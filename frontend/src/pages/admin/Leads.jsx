@@ -29,6 +29,11 @@ export default function Leads() {
   }, [load]);
 
   useEffect(() => {
+    const id = window.setInterval(load, 30000);
+    return () => window.clearInterval(id);
+  }, [load]);
+
+  useEffect(() => {
     api.post("/admin/leads/mark-all-read").catch(() => {});
   }, []);
 

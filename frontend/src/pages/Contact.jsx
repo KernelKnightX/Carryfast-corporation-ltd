@@ -25,14 +25,8 @@ export default function Contact() {
         label="Contact Us"
         title={<>Get in <span className="text-gold-500">touch.</span></>}
         subtitle="Talk to our customs clearance team directly. For general enquiries use the form below. For time-sensitive shipments, examinations or port queries — call us straight away."
-        image="https://images.pexels.com/photos/4487383/pexels-photo-4487383.jpeg"
+        image="/logos/contact us.jpg"
         breadcrumbs={[{ to: "/", label: "Home" }, { label: "Contact Us" }]}
-        badges={[
-          { label: "Indore", sub: "Global HQ · MP, India" },
-          { label: "Mon–Sat", sub: "10:30 AM – 6:30 PM" },
-          { label: "24 hr", sub: "Response SLA" },
-          { label: "Pan-India", sub: "All Major Ports" },
-        ]}
       />
 
       {/* Contact Information + Map */}
@@ -84,6 +78,25 @@ export default function Contact() {
                   <div className="text-navy-900">{c.working_hours}</div>
                 </div>
               </div>
+              {cfg.social && (cfg.social.instagram || cfg.social.facebook || cfg.social.linkedin) && (
+                <div className="flex flex-wrap gap-3 mt-8">
+                  {cfg.social.instagram && (
+                    <a href={cfg.social.instagram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-navy-900 hover:text-gold-500">
+                      Instagram
+                    </a>
+                  )}
+                  {cfg.social.facebook && (
+                    <a href={cfg.social.facebook} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-navy-900 hover:text-gold-500">
+                      Facebook
+                    </a>
+                  )}
+                  {cfg.social.linkedin && (
+                    <a href={cfg.social.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-navy-900 hover:text-gold-500">
+                      LinkedIn
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -106,7 +119,7 @@ export default function Contact() {
       <section className="section-y bg-slate-50">
         <div className="container-x grid md:grid-cols-12 gap-10">
           <div className="md:col-span-5">
-            <div className="text-overline mb-5">Send Us A Message</div>
+            <div className="text-overline mb-5">General Enquiries</div>
             <h2 className="font-display font-extrabold text-3xl md:text-4xl tracking-tight text-navy-900 leading-tight">Send Us a Message</h2>
             <p className="mt-6 text-slate-600 leading-relaxed">
               Use this form for general enquiries, new client queries, or documentation questions. Our team responds within one business day.
@@ -150,9 +163,6 @@ export default function Contact() {
           <div className="mt-9 flex flex-wrap justify-center gap-4">
             <a href={`tel:${c.phone_urgent.replace(/\s+/g, "")}`} className="inline-flex items-center gap-3 bg-gold-500 text-white px-7 py-4 text-sm font-semibold hover:bg-gold-600 transition-colors" data-testid="urgent-call-btn">
               <Phone size={16} /> {c.phone_urgent}
-            </a>
-            <a href={`mailto:${c.email}`} className="inline-flex items-center gap-3 border-2 border-white/70 text-white px-7 py-4 text-sm font-semibold hover:bg-white hover:text-navy-900 transition-colors">
-              <Mail size={16} /> {c.email}
             </a>
           </div>
         </div>

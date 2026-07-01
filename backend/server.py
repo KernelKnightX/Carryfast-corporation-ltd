@@ -17,6 +17,7 @@ from datetime import datetime, timezone, timedelta
 from typing import List, Optional
 
 import httplib2
+import requests
 import firebase_admin
 from firebase_admin import credentials as fb_credentials, auth as fb_auth
 from fastapi import FastAPI, APIRouter, Depends, HTTPException, Request, UploadFile, File, Query
@@ -39,6 +40,8 @@ mongo_url = os.environ['MONGO_URL']
 MONGO_TIMEOUT_MS = int(os.environ.get("MONGO_TIMEOUT_MS", "3000"))
 client = AsyncIOMotorClient(mongo_url, serverSelectionTimeoutMS=MONGO_TIMEOUT_MS)
 db = client[os.environ['DB_NAME']]
+
+FIREBASE_WEB_API_KEY = os.environ.get('FIREBASE_WEB_API_KEY')
 
 # ---------- Firebase Admin ----------
 sa_path = os.environ.get('FIREBASE_SA_PATH')
@@ -78,6 +81,8 @@ api_router = APIRouter(prefix="/api")
 
 # ---------- Uploads ----------
 UPLOAD_DIR = Path(os.environ['UPLOAD_DIR'])
+if not UPLOAD_DIR.is_absolute():
+    UPLOAD_DIR = ROOT_DIR / UPLOAD_DIR
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 PUBLIC_BASE_URL = os.environ.get('PUBLIC_BASE_URL', '').rstrip('/')
 
@@ -104,6 +109,11 @@ GA4_PROPERTY_ID = os.environ.get("GA4_PROPERTY_ID")
 GA4_SA_PATH = os.environ.get("GA4_SA_PATH", sa_path)
 GA4_SCOPES = ["https://www.googleapis.com/auth/analytics.readonly"]
 GA4_TIMEOUT_SECONDS = int(os.environ.get("GA4_TIMEOUT_SECONDS", "5"))
+
+CORS_ORIGINS = [o.strip() for o in os.environ.get('CORS_ORIGINS', 'http://localhost:3000').split(',') if o.strip()]
+if not CORS_ORIGINS:
+    CORS_ORIGINS = ["http://localhost:3000"]
+    logger.warning("CORS_ORIGINS was empty; defaulting to http://localhost:3000")
 
 
 def get_ga4_credentials() -> Optional[service_account.Credentials]:
@@ -274,10 +284,10 @@ DEFAULT_SITE_CONFIG = {
         {"value": 99.5, "suffix": "%", "label": "On-Time Clearance Rate", "sub": "Documentation accuracy and procedural knowledge translate directly to clearances that do not get held up."},
     ],
     "hero_slides": [
-        {"image": "https://images.pexels.com/photos/9806482/pexels-photo-9806482.jpeg", "overline": "Customs Clearance · Since 1995", "title_lines": ["Customs Clearance.", "Backed by 30 Years"], "title_span": "of Operations.", "subtitle": "India's import and export procedures are detailed, time-sensitive, and constantly evolving. Carry Fast Corporation has managed this process for Indian businesses since 1995."},
-        {"image": "https://images.unsplash.com/photo-1587293852726-70cdb56c2866", "overline": "AEO Certified · Indian Customs", "title_lines": ["The Only AEO-Certified", "Customs Intermediary"], "title_span": "in Madhya Pradesh.", "subtitle": "AEO certification by Indian Customs — audited for compliance, financial soundness and operational reliability. Our clients work with a partner whose standards are independently verified."},
-        {"image": "https://images.unsplash.com/photo-1605745341112-85968b19335b", "overline": "12,000+ Shipments · 99.5% On-Time", "title_lines": ["Cargo clears.", "Operations"], "title_span": "never wait.", "subtitle": "Bill of Entry filed the same day. Examination handled at the port by our team. Documentation pre-validated before submission. A 99.5% on-time rate maintained year after year."},
-        {"image": "https://images.pexels.com/photos/4487383/pexels-photo-4487383.jpeg", "overline": "CONCOR Best Customs Broker · Since 1997", "title_lines": ["Recognised by CONCOR", "every year"], "title_span": "since 1997.", "subtitle": "An unbroken record of recognition across nearly three decades — awarded annually by Container Corporation of India for consistent operational performance."},
+        {"image": "/logos/Logistics-in-India.jpg", "overline": "Customs Clearance · Since 1995", "title_lines": ["Customs Clearance.", "Backed by 30 Years"], "title_span": "of Operations.", "subtitle": "India's import and export procedures are detailed, time-sensitive, and constantly evolving. Carry Fast Corporation has managed this process for Indian businesses since 1995."},
+        {"image": "/logos/logistic1.jpg", "overline": "AEO Certified · Indian Customs", "title_lines": ["The Only AEO-Certified", "Customs Intermediary"], "title_span": "in Madhya Pradesh.", "subtitle": "AEO certification by Indian Customs — audited for compliance, financial soundness and operational reliability. Our clients work with a partner whose standards are independently verified."},
+        {"image": "/logos/logistic3.jpg", "overline": "12,000+ Shipments · 99.5% On-Time", "title_lines": ["Cargo clears.", "Operations"], "title_span": "never wait.", "subtitle": "Bill of Entry filed the same day. Examination handled at the port by our team. Documentation pre-validated before submission. A 99.5% on-time rate maintained year after year."},
+        {"image": "/logos/logistic4.jpg", "overline": "CONCOR Best Customs Broker · Since 1997", "title_lines": ["Recognised by CONCOR", "every year"], "title_span": "since 1997.", "subtitle": "An unbroken record of recognition across nearly three decades — awarded annually by Container Corporation of India for consistent operational performance."},
     ],
     "testimonials": {
         "heading": "What Our Clients Say",
@@ -348,6 +358,52 @@ async def create_lead(body: LeadIn):
     doc["read"] = False
     await db.leads.insert_one(doc)
     return {"ok": True, "id": doc["id"]}
+
+
+class LoginIn(BaseModel):
+    email: EmailStr
+    password: str
+
+
+def _firebase_sign_in(email: str, password: str) -> dict:
+    if not FIREBASE_WEB_API_KEY:
+        raise RuntimeError("FIREBASE_WEB_API_KEY is required for backend auth login.")
+    url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={FIREBASE_WEB_API_KEY}"
+    resp = requests.post(url, json={"email": email, "password": password, "returnSecureToken": True}, timeout=10)
+    if resp.status_code != 200:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    return resp.json()
+
+
+@api_router.post("/auth/login")
+async def login(body: LoginIn):
+    try:
+        data = await asyncio.to_thread(_firebase_sign_in, body.email, body.password)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error(f"Firebase login failed: {exc}")
+        raise HTTPException(status_code=500, detail="Authentication service unavailable")
+
+    id_token = data.get("idToken")
+    if not id_token:
+        raise HTTPException(status_code=500, detail="Authentication service did not return a token")
+
+    try:
+        decoded = fb_auth.verify_id_token(id_token)
+    except Exception as exc:
+        logger.error(f"Failed to verify Firebase ID token: {exc}")
+        raise HTTPException(status_code=401, detail="Invalid authentication token")
+
+    uid = decoded.get("uid")
+    if not uid:
+        raise HTTPException(status_code=401, detail="Invalid authentication token")
+
+    user = await db.users.find_one({"uid": uid}, {"_id": 0})
+    if not user or user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+
+    return {"token": id_token, "user": user}
 
 
 # ---------- Auth ----------
@@ -651,10 +707,40 @@ app.mount("/uploads", StaticFiles(directory=str(UPLOAD_DIR)), name="uploads")
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=CORS_ORIGINS,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def add_security_and_cache_headers(request: Request, call_next):
+    response = await call_next(request)
+
+    # Strong security defaults for all backend responses
+    response.headers.setdefault("X-Frame-Options", "DENY")
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    response.headers.setdefault("Permissions-Policy", "interest-cohort=()")
+    response.headers.setdefault("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
+    response.headers.setdefault("Cross-Origin-Opener-Policy", "same-origin")
+    response.headers.setdefault("Cross-Origin-Embedder-Policy", "unsafe-none")
+    response.headers.setdefault("X-Permitted-Cross-Domain-Policies", "none")
+    response.headers.setdefault("X-Download-Options", "noopen")
+    response.headers.setdefault(
+        "Content-Security-Policy",
+        "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://fonts.googleapis.com https://fonts.gstatic.com https://connect.facebook.net https://www.facebook.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://www.google-analytics.com https://www.facebook.com; font-src 'self' https://fonts.gstatic.com data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';",
+    )
+
+    # Cache immutable uploads, but keep dynamic/admin API responses fresh.
+    if request.url.path.startswith("/uploads"):
+        response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+    elif request.url.path.startswith("/api/admin/") or request.url.path == "/api/site-config":
+        response.headers["Cache-Control"] = "no-store"
+    elif request.method == "GET" and request.url.path.startswith("/api/"):
+        response.headers["Cache-Control"] = "public, max-age=30, stale-while-revalidate=60"
+
+    return response
 
 
 # ---------- Seed Data ----------
@@ -664,7 +750,7 @@ SEED_BLOGS = [
         "excerpt": "Authorised Economic Operator status is now a recognised compliance differentiator. Here is what AEO means in practice — and how it affects clearance timelines for importers.",
         "tags": ["cbic", "aeo", "compliance"],
         "content": "## Why AEO matters more than ever\n\nThe Authorised Economic Operator (AEO) programme run by Indian Customs is no longer a niche certification. For importers handling regular consignments, working with an AEO-certified customs broker can materially reduce examination frequency, documentation queries, and overall clearance time.\n\n### What AEO actually verifies\nAEO certification is granted only after a detailed audit covering:\n\n- Financial soundness of the entity\n- Three-year customs compliance record\n- Internal control systems for record-keeping\n- Operational reliability and security protocols\n- Procedural discipline in handling consignments\n\n### The practical benefit for importers\nAt Carry Fast Corporation — the only AEO-certified customs intermediary in Madhya Pradesh — clients see three measurable benefits:\n\n1. **Reduced physical examination rates** on routine consignments\n2. **Faster Bill of Entry assessment** turnaround\n3. **Direct credibility** with port and customs officers who recognise the AEO mark\n\nIf you are evaluating customs brokers in 2026, AEO status should be a baseline filter — not a nice-to-have.",
-        "cover_image": "https://images.pexels.com/photos/4487383/pexels-photo-4487383.jpeg",
+        "cover_image": "/logos/Logistics-in-India.jpg",
         "meta_title": "AEO Certification Guide for Indian Importers 2026 | Carry Fast",
         "meta_description": "Understand what AEO certification means for Indian importers, the audit process, and the practical benefits of working with an AEO-certified customs broker.",
         "meta_keywords": "AEO certification India, authorised economic operator, customs broker AEO, Indian customs AEO benefits",
@@ -674,7 +760,7 @@ SEED_BLOGS = [
         "excerpt": "From document collection to out-of-charge, here is the complete sequence of a clean Bill of Entry filing in India — including the most common pitfalls importers face.",
         "tags": ["icegate", "procedures", "bill-of-entry"],
         "content": "## The Bill of Entry process, end-to-end\n\nA Bill of Entry (BoE) is the core import declaration filed on ICEGATE. The accuracy of the BoE determines whether a consignment clears cleanly or gets pulled for query, examination, or re-assessment.\n\n### The 7 sequential stages\n\n1. **Pre-arrival document collection** — Commercial invoice, packing list, BL/AWB, COO, import licences\n2. **HSN classification** — Eight-digit code aligned with current Customs Tariff\n3. **ICEGATE filing** — Pre-filing where possible to compress timelines\n4. **Risk Management System** routing — Green, Yellow, or Red channel\n5. **Assessment** — Duty computation and licence verification\n6. **Examination** — Physical inspection if RMS calls for it\n7. **Out-of-Charge** — Final release after duty payment\n\n### Top 5 reasons BoEs get held up\n\n- HSN code mismatch between invoice and filing\n- Country of origin discrepancies\n- Missing licence references for restricted items\n- Valuation outliers triggering SVB review\n- BIS / FSSAI compliance gaps\n\n### How Carry Fast handles this differently\nFor every BoE, our team runs a pre-filing checklist covering classification, duty rates, applicable import conditions, and licensing references. This single discipline is why our 99.5% on-time clearance rate is consistent across cargo categories.",
-        "cover_image": "https://images.pexels.com/photos/9806482/pexels-photo-9806482.jpeg",
+        "cover_image": "/logos/Logistics-in-India.jpg",
         "meta_title": "Bill of Entry Filing Guide India 2026 | Step-by-Step | Carry Fast",
         "meta_description": "Complete operational guide to filing Bills of Entry on ICEGATE — process, common pitfalls and best practices for Indian importers.",
         "meta_keywords": "Bill of Entry filing India, ICEGATE BoE process, customs clearance procedure, HSN classification India",
@@ -684,7 +770,7 @@ SEED_BLOGS = [
         "excerpt": "A practical operational summary of the latest Foreign Trade Policy updates from DGFT — including changes that affect EPCG, advance authorisation, and RodTEP claims.",
         "tags": ["dgft", "ftp", "policy"],
         "content": "## DGFT moves continue to reshape import-export operations\n\nThe Foreign Trade Policy review introduces several practical changes that directly affect importers and exporters claiming benefits under DGFT schemes.\n\n### Key changes operations teams should track\n\n### 1. EPCG Scheme Adjustments\nUpdates to export obligation periods and capital-goods value caps now affect project cargo planning. Importers under EPCG must re-confirm obligation discharge timelines against the revised policy.\n\n### 2. Advance Authorisation Compliance\nMinor amendments to input-output norms (SION) for several product categories. Manufacturer-exporters should reverify SION applicability on next consignments.\n\n### 3. RodTEP Scheme Continuity\nThe Remission of Duties and Taxes on Exported Products scheme continues with revised rates for specific tariff lines — particularly relevant for engineering goods exporters.\n\n### 4. ITC(HSN) Code Reclassifications\nA handful of HSN codes have been reclassified between Free, Restricted, and Prohibited lists. Importers should re-verify status before placing fresh orders.\n\n### How to stay current\nDGFT issues Policy Circulars, Trade Notices, and Public Notices at a frequency that operations teams cannot reasonably track manually. Carry Fast monitors these centrally and advises clients of any change that affects their import or export programmes — before the consignment is booked.",
-        "cover_image": "https://images.unsplash.com/photo-1605745341112-85968b19335b",
+        "cover_image": "/logos/Logistics-in-India.jpg",
         "meta_title": "DGFT Foreign Trade Policy Updates 2026 | Carry Fast",
         "meta_description": "Operational summary of the latest DGFT Foreign Trade Policy updates affecting EPCG, advance authorisation, RodTEP and HSN classification.",
         "meta_keywords": "DGFT updates India, Foreign Trade Policy 2026, EPCG scheme, advance authorisation, RodTEP, ITC HSN classification",
@@ -713,7 +799,7 @@ async def on_startup():
 
     # Seed first admin in Firebase + MongoDB (idempotent)
     admin_email = os.environ.get("ADMIN_SEED_EMAIL", "admin@carryfastcorp.com").lower()
-    admin_password = os.environ.get("ADMIN_SEED_PASSWORD", "Admin@123")
+    admin_password = os.environ.get("ADMIN_SEED_PASSWORD")
     admin_name = os.environ.get("ADMIN_SEED_NAME", "Admin")
 
     fb_user = None
@@ -723,6 +809,9 @@ async def on_startup():
             timeout=5,
         )
     except fb_auth.UserNotFoundError:
+        if not admin_password:
+            logger.warning("ADMIN_SEED_PASSWORD is not set; skipping Firebase admin seed.")
+            return
         try:
             fb_user = await asyncio.wait_for(
                 asyncio.to_thread(

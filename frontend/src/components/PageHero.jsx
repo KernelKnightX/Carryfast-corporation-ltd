@@ -16,10 +16,43 @@ export default function PageHero({ label, title, subtitle, image, breadcrumbs = 
     <section className="relative bg-navy-900 text-white overflow-hidden">
       <div className="absolute inset-0 grid-pattern opacity-25" />
       {image && (
-        <div className="absolute inset-y-0 right-0 w-full lg:w-[55%] opacity-25 lg:opacity-100 pointer-events-none">
-          <img src={image} alt="" className="w-full h-full object-cover" />
-          {/* gradient over image so left half stays readable, right half blends */}
-          <div className="absolute inset-0 bg-gradient-to-r from-navy-900 via-navy-900/85 to-transparent lg:via-navy-900/60" />
+        <div className="absolute inset-0 pointer-events-none">
+          {typeof image === "string" && image.startsWith("/logos/") ? (
+            (() => {
+              const path = image.replace(/^\//, "");
+              const name = path.split("/").pop().replace(/\.[^.]+$/, "");
+              const base = `/logos/${name}`;
+              return (
+                <picture>
+                  <source type="image/avif" srcSet={`${base}-lg.avif 1920w, ${base}-md.avif 1280w, ${base}-sm.avif 800w`} />
+                  <source type="image/webp" srcSet={`${base}-lg.webp 1920w, ${base}-md.webp 1280w, ${base}-sm.webp 800w`} />
+                  <img
+                    src={image}
+                    alt=""
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                    fetchPriority="high"
+                    width={1920}
+                    height={1280}
+                    srcSet={`${base}-lg.webp 1920w, ${base}-md.webp 1280w, ${base}-sm.webp 800w`}
+                    sizes="(min-width:1024px) 50vw, 100vw"
+                  />
+                </picture>
+              );
+            })()
+          ) : (
+            <img
+              src={image}
+              alt=""
+              className="w-full h-full object-cover"
+              loading="eager"
+              fetchPriority="high"
+              width={1920}
+              height={1280}
+            />
+          )}
+          {/* stronger black fade on left so text stays visible against the image */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent" />
         </div>
       )}
 

@@ -14,11 +14,11 @@ const QUICK_LINKS = [
 ];
 
 const SERVICES = [
-  ["Customs Clearance", "/services"],
-  ["Import Customs Clearance", "/services"],
-  ["Export Customs Clearance", "/services"],
-  ["Trade Compliance", "/services"],
-  ["Documentation Support", "/services"],
+  ["Customs Clearance", "/services#customs-clearance"],
+  ["Import Customs Clearance", "/services#import-customs-clearance"],
+  ["Export Customs Clearance", "/services#export-customs-clearance"],
+  ["Trade Compliance", "/services#trade-compliance"],
+  ["Documentation Support", "/services#documentation-support"],
 ];
 
 export default function Footer() {
@@ -27,33 +27,37 @@ export default function Footer() {
   const social = cfg.social || {};
 
   const socials = [
-    { url: social.linkedin, Icon: Linkedin, label: "LinkedIn" },
-    { url: social.facebook, Icon: Facebook, label: "Facebook" },
-    { url: social.twitter, Icon: Twitter, label: "Twitter" },
-    { url: social.instagram, Icon: Instagram, label: "Instagram" },
-  ].filter((s) => s.url);
+    { url: social.linkedin, Icon: Linkedin, label: "LinkedIn", className: "bg-[#0A66C2] hover:bg-[#0C66D0]" },
+    { url: social.facebook, Icon: Facebook, label: "Facebook", className: "bg-[#1877F2] hover:bg-[#3B82F6]" },
+    { url: social.instagram, Icon: Instagram, label: "Instagram", className: "bg-gradient-to-br from-[#F58529] via-[#DD2A7B] to-[#8134AF] hover:opacity-90" },
+    { url: social.twitter, Icon: Twitter, label: "Twitter", className: "bg-[#1DA1F2] hover:bg-[#4EA3F7]" },
+  ];
 
   return (
     <footer className="bg-navy-900 text-white">
       <div className="container-x py-16 md:py-20 grid md:grid-cols-12 gap-10">
         <div className="md:col-span-4">
-          <Logo inverted size="lg" />
+          <Logo inverted size="lg" showText />
           <p className="mt-6 text-sm text-white/70 leading-relaxed max-w-sm">
             {cfg.footer?.tagline || "Customs clearance, trade compliance, and documentation support for manufacturers, traders, and industrial businesses across India."}
           </p>
           <p className="mt-4 text-xs text-gold-400 uppercase tracking-[0.18em] font-semibold">
             {cfg.footer?.since || "Serving Indian Trade Since 1995"}
           </p>
-          {socials.length > 0 && (
-            <div className="mt-6 flex items-center gap-3">
-              {socials.map((s) => (
-                <a key={s.label} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.label}
-                   className="w-9 h-9 border border-white/20 flex items-center justify-center hover:border-gold-500 hover:bg-gold-500 transition-colors">
-                  <s.Icon size={15} />
-                </a>
-              ))}
-            </div>
-          )}
+          <div className="mt-6 flex items-center gap-3">
+            {socials.map((s) => (
+              <a
+                key={s.label}
+                href={s.url || "#"}
+                target={s.url ? "_blank" : undefined}
+                rel={s.url ? "noopener noreferrer" : undefined}
+                aria-label={s.label}
+                className={`w-10 h-10 rounded-full flex items-center justify-center text-white transition-all ${s.className} ${!s.url ? "opacity-50 cursor-not-allowed" : "hover:scale-105"}`}
+              >
+                <s.Icon size={16} />
+              </a>
+            ))}
+          </div>
         </div>
 
         <div className="md:col-span-2">
@@ -80,11 +84,6 @@ export default function Footer() {
             <div className="flex items-start gap-3"><MapPin size={16} className="mt-0.5 text-gold-500 shrink-0" />
               <span>{c.address_line_1}<br />{c.address_line_2}<br />{c.address_line_3}</span>
             </div>
-            {c.phone_urgent && (
-              <a href={`tel:${c.phone_urgent.replace(/\s+/g, "")}`} className="flex items-center gap-3 hover:text-gold-400">
-                <Phone size={16} className="text-gold-500" /> {c.phone_urgent}
-              </a>
-            )}
             {c.email && (
               <a href={`mailto:${c.email}`} className="flex items-center gap-3 hover:text-gold-400">
                 <Mail size={16} className="text-gold-500" /> {c.email}

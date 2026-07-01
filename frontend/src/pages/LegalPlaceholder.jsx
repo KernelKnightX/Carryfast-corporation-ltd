@@ -60,7 +60,6 @@ export default function LegalPlaceholder({ slug }) {
         subtitle={policy?.subtitle}
         image={policy?.image}
         breadcrumbs={[{ to: "/", label: "Home" }, { label: title }]}
-        badges={policy?.badges}
       />
       {policy ? (
         <>
@@ -115,30 +114,6 @@ export default function LegalPlaceholder({ slug }) {
             </div>
           </section>
 
-          <section className="bg-slate-50 border-t border-slate-200">
-            <div className="container-x max-w-5xl py-10 md:py-12">
-              <div className="bg-navy-900 text-white relative overflow-hidden">
-                <div className="absolute inset-0 grid-pattern opacity-30" />
-                <div className="relative grid md:grid-cols-12 gap-6 items-center p-6 md:p-8">
-                  <div className="md:col-span-8">
-                    <div className="text-overline mb-3">Questions?</div>
-                    <h3 className="font-display font-extrabold text-2xl md:text-3xl tracking-tight">Need clarity on this policy?</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-white/70">
-                      For questions regarding our {title.toLowerCase()}, contact the Carry Fast Corporation team directly.
-                    </p>
-                  </div>
-                  <div className="md:col-span-4 flex flex-col sm:flex-row md:flex-col gap-3 md:items-stretch">
-                    <a href="mailto:info@carryfastcorp.com" className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-5 py-3 text-sm font-semibold hover:bg-gold-600 transition-colors">
-                      <Mail size={16} /> Email Us
-                    </a>
-                    <Link to="/" className="inline-flex items-center justify-center gap-2 border border-white/20 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10 transition-colors">
-                      Back to Home <ArrowRight size={15} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
         </>
       ) : (
         <section className="section-y bg-white">

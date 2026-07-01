@@ -7,7 +7,7 @@ const SERVICES = [
   {
     key: "customs-clearance",
     icon: FileCheck,
-    img: "https://images.pexels.com/photos/4487383/pexels-photo-4487383.jpeg",
+    img: "/logos/services.jpg",
     t: "Customs Clearance Services",
     paragraphs: [
       "A customs intermediary acts on behalf of an importer or exporter in dealings with Indian Customs. The role requires a valid F Card licence, working knowledge of the Customs Act, the Customs Tariff Act, DGFT policy, and the procedural requirements at each port and airport of entry. Carry Fast Corporation holds the F Card licence and has handled customs clearance under this licence since 1995. Both partners — Anurag Vijayvargiya and Abhay Nilosey — are F Card holders, which means the firm's compliance accountability sits at the highest level of its leadership.",
@@ -18,7 +18,7 @@ const SERVICES = [
   {
     key: "import-customs-clearance",
     icon: Anchor,
-    img: "https://images.pexels.com/photos/9806482/pexels-photo-9806482.jpeg",
+    img: "/logos/logistic1.jpg",
     t: "Import Customs Clearance",
     paragraphs: [
       "Import customs clearance in India involves multiple steps that must be completed in the correct sequence and within regulatory time limits. Once a shipment arrives at the port or airport, the Bill of Entry must be filed on ICEGATE, the goods must be assessed and examined where called for, applicable duties must be paid, and an out-of-charge order must be obtained before the cargo can be released. Delays at any stage result in demurrage, detention, and in some cases penal action under the Customs Act. Carry Fast has managed this process across all major ports, airports, ICDs, and CFS locations in India for three decades.",
@@ -29,7 +29,7 @@ const SERVICES = [
   {
     key: "export-customs-clearance",
     icon: Plane,
-    img: "https://images.unsplash.com/photo-1605745341112-85968b19335b",
+    img: "/logos/logistic3.jpg",
     t: "Export Customs Clearance",
     paragraphs: [
       "Export clearance in India requires the filing of a Shipping Bill on ICEGATE, customs examination, the Let Export Order (LEO), and gate pass in that sequence. For exporters claiming drawback, RodTEP, or other export incentives, the Shipping Bill must be filed under the correct scheme code at the time of filing, as amendments after LEO are constrained. Carry Fast has managed export clearances for clients across manufacturing, trading, and processing industries, with specific experience in incentive scheme filings and Certificate of Origin facilitation. The shipping bill is prepared on the basis of the documents submitted by the shipper. The basic documents required for filing are commercial invoice, packing list and a copy of order, PI or LC.",
@@ -40,7 +40,7 @@ const SERVICES = [
   {
     key: "trade-compliance",
     icon: BookOpen,
-    img: "https://images.unsplash.com/photo-1587293852726-70cdb56c2866",
+    img: "/logos/logistic4.jpg",
     t: "Trade Compliance",
     paragraphs: [
       "Trade compliance in India is not a static exercise. The customs tariff is amended through Finance Act notifications and standalone CBIC circulars. DGFT policy for imports and exports is updated through Policy Circulars, Trade Notices, and Public Notices. The list of BIS-notified mandatory standards grows every year. Anti-dumping and safeguard duties are imposed, amended, and withdrawn on an ongoing basis. Import licensing requirements under the Foreign Trade Policy change at each policy review. A company that does not actively track these changes will encounter compliance failures — not because of intent, but because the rules shifted without notice reaching the operations team. Registration under SIMS/PIMS/CIMS/NFMIMS/etc. are mandatory for various products.",
@@ -51,7 +51,7 @@ const SERVICES = [
   {
     key: "documentation-support",
     icon: FileText,
-    img: "https://images.pexels.com/photos/4487383/pexels-photo-4487383.jpeg",
+    img: "/logos/Logistics-in-India.jpg",
     t: "Documentation Support",
     paragraphs: [
       "Every customs clearance depends on its documentation. A mismatch between the commercial invoice and the Bill of Entry, an incorrect country of origin on the packing list, a missing import licence, or an undeclared product characteristic can trigger examination, re-assessment, or a show-cause notice — all of which delay cargo release and create costs. Carry Fast prepares, verifies, and files all customs documentation as part of its standard clearance service, and also provides documentation support to clients who handle their own clearance but need assistance with specific document categories.",
@@ -74,21 +74,28 @@ export default function Services() {
         label="Our Services"
         title={<>Five services. <span className="text-gold-500">One trusted partner.</span></>}
         subtitle="A complete customs offering — clearance, import, export, compliance and documentation — delivered by an AEO-certified F-Card licensed firm with three decades of operational experience."
-        image="https://images.pexels.com/photos/9806482/pexels-photo-9806482.jpeg"
+        image="/logos/contact.png"
         breadcrumbs={[{ to: "/", label: "Home" }, { label: "Our Services" }]}
-        badges={[
-          { label: "F-Card", sub: "Customs Licensed" },
-          { label: "ICEGATE", sub: "Same-Day Filing" },
-          { label: "DGFT", sub: "Scheme Compliance" },
-          { label: "AEO", sub: "Indian Customs" },
-        ]}
       />
 
-      <section className="bg-white border-b border-slate-200">
-        <div className="container-x py-6 flex flex-wrap gap-2">
-          {SERVICES.map((s) => (
-            <a key={s.key} href={`#${s.key}`} className="text-[11.5px] uppercase tracking-[0.15em] font-semibold text-navy-900 hover:text-gold-500 border border-slate-200 px-4 py-2.5 hover:border-gold-500 transition-colors">{s.t}</a>
-          ))}
+      {/* Customs Expertise Intro */}
+      <section className="section-y bg-white">
+        <div className="container-x max-w-4xl">
+          <div className="mb-6">
+            <div className="text-overline mb-3">Customs Expertise</div>
+            <h2 className="font-display font-extrabold text-3xl md:text-4xl tracking-tight leading-tight text-navy-900">Practical customs knowledge, applied early.</h2>
+          </div>
+          <div className="space-y-5 text-slate-700 text-base leading-relaxed">
+            <p>
+              Thirty years of customs operations across diverse industries has given Carry Fast Corporation practical knowledge that extends beyond routine customs clearance. Our team understands how industry-specific regulations, tariff classifications, licensing requirements, exemption notifications, and compliance obligations affect different categories of cargo before they become clearance issues.
+            </p>
+            <p>
+              We advise clients on customs procedures before shipments arrive, helping them prepare documentation, evaluate regulatory requirements, and address potential compliance concerns early. This proactive approach reduces unnecessary delays and supports more predictable customs processing for both regular and first-time imports and exports.
+            </p>
+            <p>
+              Our experience spans machinery, mining equipment, automotive components, chemicals, renewable energy equipment, consumer goods, food products, electrical goods, furniture, and other specialised cargo. Clients rely on our operational knowledge to support informed decisions throughout the customs process.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -97,7 +104,6 @@ export default function Services() {
           <div className="container-x grid md:grid-cols-12 gap-12 items-start">
             <div className={`md:col-span-5 ${i % 2 === 1 ? "md:order-2" : ""}`}>
               <div className="sticky top-28">
-                <div className="text-xs font-mono text-gold-500 mb-3">SERVICE 0{i + 1}</div>
                 <div className="w-14 h-14 bg-navy-900 flex items-center justify-center mb-5">
                   <s.icon size={24} className="text-gold-500" strokeWidth={1.6} />
                 </div>

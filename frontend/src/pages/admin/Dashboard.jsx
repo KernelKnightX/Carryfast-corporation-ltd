@@ -7,7 +7,16 @@ import { ADMIN_URL } from "@/lib/firebase";
 
 export default function Dashboard() {
   const [data, setData] = useState(null);
-  useEffect(() => { api.get("/admin/analytics").then((r) => setData(r.data)); }, []);
+  useEffect(() => {
+    let alive = true;
+    const load = () => api.get("/admin/analytics")
+      .then((r) => { if (alive) setData(r.data); })
+      .catch(() => {});
+
+    load();
+    const id = window.setInterval(load, 30000);
+    return () => { alive = false; window.clearInterval(id); };
+  }, []);
   if (!data) return <div className="p-10 text-slate-500">Loading…</div>;
   const k = data.kpis;
   const cards = [

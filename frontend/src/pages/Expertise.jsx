@@ -1,4 +1,4 @@
-import { Award, Zap, ShieldCheck, Eye, Users } from "lucide-react";
+import { Award, Zap, ShieldCheck, Eye, Users, FileText } from "lucide-react";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 
@@ -31,12 +31,12 @@ const INDUSTRIES = [
     ],
   },
   {
-    t: "Hygiene Products",
+    t: "Personal Care & Hygiene Products",
     points: [
-      "Import clearance for detergent powder, diapers, and wet wipes",
+      "Import clearance for detergent powder, diapers, wet wipes and personal care items",
       "BIS compliance coordination & registration management",
-      "HSN classification under chemical and paper product chapters",
-      "Labelling compliance for consumer hygiene goods entering the Indian market",
+      "HSN classification under various raw material and product chapters",
+      "Labelling and composition compliance for personal care and hygiene products entering the Indian market",
     ],
   },
   {
@@ -149,8 +149,9 @@ const ACCRED = [
 const WHY_EXPANDED = [
   { icon: Zap, t: "Speed", d: "Documentation is filed the same day in most cases. Our team knows the examination and assessment patterns at the ports and airports we work across regularly, which means we prepare for them rather than react to them. When customs raises a query or calls cargo for examination, we respond immediately. The 99.5% on-time clearance rate is a product of preparation, not luck. Clients who move time-sensitive cargo — machinery on project timelines, raw materials for production lines — choose us because delays cost them more than our fees." },
   { icon: ShieldCheck, t: "Compliance", d: "Customs regulations in India change frequently. CBIC notifications, DGFT policy updates, BIS requirement amendments, anti-dumping duty orders, and import licensing changes all affect clearance conditions. We track these changes actively and apply them before filing — not after a query is raised. Every Bill of Entry goes through a pre-filing check on classification, duty rates, and applicable import conditions. This discipline is why our clients rarely face post-clearance disputes or show-cause notices." },
+  { icon: FileText, t: "Customs Expertise", d: "Practical customs guidance built on three decades of operational experience. We help clients identify clearance issues early, prepare documentation correctly, and avoid avoidable customs delays." },
   { icon: Eye, t: "Transparency", d: "Clients should not need to call us to find out where their shipment stands. We provide updates at each stage of the clearance process — document filing, customs query, examination, assessment, duty payment, and out-of-charge. The team handling your shipment is reachable directly, without going through layers of customer service. A responsible team member is assigned to a new client whose independent mobile number and email is shared for direct contact." },
-  { icon: Users, t: "Trusted by Leading Businesses", d: "From manufacturers to multinational industrial groups, businesses across India rely on Carry Fast for customs clearance. Repeat clients, not one-off shipments, are what three decades in this business actually look like. Our top 50 importers across machinery, chemicals, automotive, energy, and consumer goods continue working with us year after year because we deliver predictable outcomes." },
+  { icon: Users, t: "Trusted by Leading Businesses", d: "From manufacturers to multinational industrial groups, businesses across India rely on Carry Fast for customs clearance. Repeat clients, not one-off shipments, are what three decades in this business actually look like. Our professionalism and deep technical knowledge ensure predictable outcomes for our clients." },
 ];
 
 export default function Expertise() {
@@ -165,15 +166,9 @@ export default function Expertise() {
       <PageHero
         label="Our Expertise"
         title={<>Industry-deep <span className="text-gold-500">customs expertise.</span></>}
-        subtitle="Each industry carries its own HSN code sensitivities, licensing requirements and examination patterns. Over 30 years, we have built working knowledge across 15 sectors — from heavy mining equipment to solar modules, pharma raw materials to confectionery."
-        image="https://images.unsplash.com/photo-1587293852726-70cdb56c2866"
+        subtitle="Each industry carries its own HSN code sensitivities, licensing requirements and examination patterns. Over 30 years, we have built working knowledge across major sectors — from heavy mining equipment to solar modules, pharma raw materials to confectionery."
+        image="/logos/Logistics-in-India.jpg"
         breadcrumbs={[{ to: "/", label: "Home" }, { label: "Our Expertise" }]}
-        badges={[
-          { label: "15", sub: "Industries Served" },
-          { label: "6,000+", sub: "Item Types Handled" },
-          { label: "Pan-India", sub: "All Major Ports & ICDs" },
-          { label: "MP-Only", sub: "AEO Certified Broker" },
-        ]}
       />
 
       {/* Industries */}
@@ -181,7 +176,7 @@ export default function Expertise() {
         <div className="container-x">
           <div className="mb-12 max-w-3xl">
             <div className="text-overline mb-5">Industries We Serve</div>
-            <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight text-navy-900 leading-tight">15 industries. 30 years.</h2>
+            <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight text-navy-900 leading-tight">Multiple major industries, 30 years of experience.</h2>
             <p className="mt-6 text-slate-600 leading-relaxed">
               Customs clearance is not generic work. Each industry carries its own HSN code sensitivities, licensing requirements, restricted-item conditions, and examination patterns. Over 30 years, Carry Fast has built working knowledge across the following sectors.
             </p>
@@ -189,7 +184,6 @@ export default function Expertise() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {INDUSTRIES.map((it, i) => (
               <div key={i} data-testid={`expertise-${i}`} className="bg-white border border-slate-200 p-7 hover:border-gold-500 hover:shadow-lg hover:-translate-y-1 transition-all">
-                <div className="text-xs font-mono text-gold-500 mb-3">0{i + 1 < 10 ? `0${i + 1}` : i + 1}</div>
                 <h3 className="font-display font-bold text-lg text-navy-900 leading-snug">{it.t}</h3>
                 <ul className="mt-5 space-y-2.5">
                   {it.points.map((p, j) => (
@@ -208,8 +202,8 @@ export default function Expertise() {
       <section className="section-y bg-slate-50">
         <div className="container-x">
           <div className="mb-12 text-center">
-            <div className="text-overline mb-5">Accreditations</div>
-            <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight text-navy-900">Our Accreditations</h2>
+            <div className="text-overline mb-5">Credentials</div>
+            <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight text-navy-900">Accreditations</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {ACCRED.map((a, i) => (
@@ -233,7 +227,7 @@ export default function Expertise() {
             <div className="text-overline mb-5">Why Choose Carry Fast</div>
             <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight text-navy-900">Why Clients Work With Us</h2>
           </div>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {WHY_EXPANDED.map((w, i) => (
               <div key={i} data-testid={`why-exp-${i}`} className="bg-white border border-slate-200 p-8 hover:border-gold-500 transition-colors">
                 <div className="flex items-center gap-4 mb-5">

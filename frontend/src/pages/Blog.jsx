@@ -61,16 +61,10 @@ export default function Blog() {
 
       <PageHero
         label="Blog"
-        title={<>Customs & <span className="text-gold-500">Trade Intelligence.</span></>}
+        title={<>Carry Fast Corporation <span className="text-gold-500">Blog.</span></>}
         subtitle="Indian customs regulations, trade policy and import-export procedures change frequently. We track notifications from CBIC, DGFT and ICEGATE — and translate them into practical operational guidance for importers, exporters and supply chain teams."
-        image="https://images.unsplash.com/photo-1605745341112-85968b19335b"
+        image="/logos/blogs.jpg"
         breadcrumbs={[{ to: "/", label: "Home" }, { label: "Blog" }]}
-        badges={[
-          { label: "CBIC", sub: "Notifications" },
-          { label: "DGFT", sub: "Policy Updates" },
-          { label: "ICEGATE", sub: "System Changes" },
-          { label: "Operational", sub: "Practical Guides" },
-        ]}
       />
 
       {/* Featured Article */}
@@ -102,7 +96,7 @@ export default function Blog() {
         <div className="container-x">
           <div className="mb-10">
             <div className="text-overline mb-5">Latest Articles</div>
-            <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight text-navy-900">From the Carry Fast desk.</h2>
+            <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight text-navy-900">Latest from the Carry Fast blog.</h2>
           </div>
           {loading ? (
             <div className="text-slate-500 py-12">Loading…</div>

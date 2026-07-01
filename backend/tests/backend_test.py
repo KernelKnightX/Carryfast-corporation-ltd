@@ -6,8 +6,8 @@ import requests
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8001").rstrip("/")
 API = f"{BASE_URL}/api"
 
-ADMIN_EMAIL = "admin@carryfast.com"
-ADMIN_PASSWORD = "Admin@123"
+ADMIN_EMAIL = os.environ.get("ADMIN_SEED_EMAIL", "admin@carryfastcorp.com")
+ADMIN_PASSWORD = os.environ.get("ADMIN_SEED_PASSWORD")
 
 
 @pytest.fixture(scope="session")
@@ -19,6 +19,8 @@ def session():
 
 @pytest.fixture(scope="session")
 def admin_token(session):
+    if not ADMIN_PASSWORD:
+        pytest.skip("ADMIN_SEED_PASSWORD is required for admin integration tests")
     r = session.post(f"{API}/auth/login", json={"email": ADMIN_EMAIL, "password": ADMIN_PASSWORD})
     assert r.status_code == 200, f"Admin login failed: {r.status_code} {r.text}"
     data = r.json()

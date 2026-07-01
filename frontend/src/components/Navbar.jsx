@@ -22,7 +22,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/90 border-b border-slate-200/70 shadow-sm">
       <div className="container-x flex items-center justify-between h-20">
-        <Logo />
+        <Logo height="80px" width="200px" />
         <nav className="hidden xl:flex items-center gap-1">
           {links.map((l) => (
             <NavLink
@@ -42,11 +42,6 @@ export default function Navbar() {
           ))}
         </nav>
         <div className="hidden xl:flex items-center gap-3">
-          {urgent && (
-            <a href={`tel:${urgent.replace(/\s+/g, "")}`} className="flex items-center gap-2 text-xs text-navy-900 hover:text-gold-500">
-              <Phone size={14} /> <span className="font-semibold">{urgent}</span>
-            </a>
-          )}
           <Link
             to="/contact"
             data-testid="nav-cta-contact"
