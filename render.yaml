@@ -9,6 +9,10 @@ services:
         value: production
       - key: PYTHON_VERSION
         value: 3.11
+      - key: UPLOAD_DIR
+        value: /var/app/uploads
+      - key: PUBLIC_BASE_URL
+        value: https://carryfast-corporation-ltd.onrender.com
     persistentDisk:
       name: uploads
       mountPath: /var/app/uploads
