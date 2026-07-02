@@ -10,8 +10,9 @@ const getImageUrl = (url) => {
   if (!url) return "";
   if (url.startsWith("http")) return url; // Already absolute
   if (url.startsWith("/uploads/")) {
-    const backendBase = API.replace(/\/api$/, ""); // Remove /api suffix
-    return `${backendBase}${url}`;
+    // Use environment variable for backend URL, fallback to API base
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || API.replace(/\/api$/, "");
+    return `${backendUrl}${url}`;
   }
   return url;
 };
