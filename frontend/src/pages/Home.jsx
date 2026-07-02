@@ -176,7 +176,7 @@ export default function Home() {
       <section className="section-y bg-slate-50">
         <div className="container-x">
           <div className="mb-12">
-            <div className="text-overline mb-5">INDUSTRY SOLUTION- </div>
+            <div className="text-overline mb-5">INDUSTRY SOLUTION </div>
             <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight text-navy-900">Industries We Serve</h2>
             <p className="mt-5 text-slate-600 max-w-3xl leading-relaxed">
               We handle customs clearance across a broad range of industries, each with its own classification requirements, licensing conditions, and documentation standards.

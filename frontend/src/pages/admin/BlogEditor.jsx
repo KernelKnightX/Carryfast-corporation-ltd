@@ -33,7 +33,7 @@ export default function BlogEditor() {
     try {
       const fd = new FormData();
       fd.append("file", file);
-      const { data } = await api.post("/admin/upload", fd, { headers: { "Content-Type": "multipart/form-data" } });
+      const { data } = await api.post("/admin/upload", fd);
       set(field === "cover" ? "cover_image" : "og_image", data.url);
       toast.success("Image uploaded.");
     } catch (e) {

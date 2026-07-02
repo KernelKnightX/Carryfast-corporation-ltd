@@ -40,7 +40,7 @@ export default function SiteConfigEditor() {
     try {
       const fd = new FormData();
       fd.append("file", file);
-      const { data } = await api.post("/admin/upload", fd, { headers: { "Content-Type": "multipart/form-data" } });
+      const { data } = await api.post("/admin/upload", fd);
       setField("company", "logo_url", data.url);
     } catch (e) {
       toast.error(e?.response?.data?.detail || "Logo upload failed.");
@@ -55,8 +55,9 @@ export default function SiteConfigEditor() {
     try {
       const fd = new FormData();
       fd.append("file", file);
-      const { data } = await api.post("/admin/upload", fd, { headers: { "Content-Type": "multipart/form-data" } });
-      onUrl(data.url);
+      const { data } = await api.post("/admin/upload", fd);
+      if (typeof onUrl === "function") onUrl(data.url);
+      return data.url;
     } catch (e) {
       toast.error(e?.response?.data?.detail || "Image upload failed.");
     } finally {
@@ -160,8 +161,10 @@ export default function SiteConfigEditor() {
           items={cfg.hero_slides || []}
           onChange={(v) => setSection("hero_slides", v)}
           newItem={() => ({ image: "", overline: "", title_lines: ["", ""], title_span: "", subtitle: "" })}
+          onUpload={handleImageUpload}
+          uploading={uploading}
           fields={[
-            { key: "image", label: "Image URL", preview: true },
+            { key: "image", label: "Image URL / Upload", preview: true, upload: true },
             { key: "overline", label: "Overline" },
             { key: "title_lines", label: "Title lines (one per line)", multiline_array: true },
             { key: "title_span", label: "Title accent (gold)" },
@@ -305,7 +308,7 @@ function Field({ label, children, full }) {
   );
 }
 
-function ListEditor({ items, onChange, newItem, fields }) {
+function ListEditor({ items, onChange, newItem, fields, onUpload, uploading }) {
   const input = "w-full bg-white border border-slate-200 px-3 py-2 text-sm text-navy-900 focus:outline-none focus:border-gold-500";
   const updateItem = (idx, k, v) => {
     const next = items.slice();
@@ -314,6 +317,13 @@ function ListEditor({ items, onChange, newItem, fields }) {
   };
   const remove = (idx) => onChange(items.filter((_, i) => i !== idx));
   const add = () => onChange([...items, newItem()]);
+
+  const handleUpload = async (idx, file, fieldKey) => {
+    if (!file || !onUpload) return;
+    try {
+      await onUpload(file, (uploadedUrl) => updateItem(idx, fieldKey, uploadedUrl));
+    } catch {}
+  };
 
   return (
     <div className="space-y-4">
@@ -333,7 +343,21 @@ function ListEditor({ items, onChange, newItem, fields }) {
               ) : f.type === "number" ? (
                 <input type="number" step="0.1" className={input} value={it[f.key] ?? ""} onChange={(e) => updateItem(idx, f.key, parseFloat(e.target.value) || 0)} />
               ) : (
-                <input className={input} value={it[f.key] || ""} onChange={(e) => updateItem(idx, f.key, e.target.value)} />
+                <>
+                  <input className={input} value={it[f.key] || ""} onChange={(e) => updateItem(idx, f.key, e.target.value)} />
+                  {f.upload && onUpload && (
+                    <label className="mt-2 inline-flex items-center justify-center gap-2 rounded-sm border border-slate-300 px-4 py-2 text-sm text-navy-900 hover:border-gold-500 hover:bg-slate-50 cursor-pointer transition-colors">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        disabled={uploading}
+                        onChange={(e) => handleUpload(idx, e.target.files?.[0], f.key)}
+                      />
+                      {uploading ? "Uploading image…" : "Upload image file"}
+                    </label>
+                  )}
+                </>
               )}
               {f.preview && it[f.key] && <img src={it[f.key]} alt="" className="mt-2 h-24 w-full object-cover border border-slate-200" />}
             </div>
