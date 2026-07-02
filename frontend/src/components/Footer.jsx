@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin, Linkedin, Facebook, Twitter, Instagram } from "lucide-react";
+import { Mail, MapPin, Linkedin, Facebook, Instagram } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { useSiteConfig } from "@/contexts/SiteConfigContext";
 
@@ -14,12 +14,25 @@ const QUICK_LINKS = [
 ];
 
 const SERVICES = [
+  ["Customs Expertise", "/services#customs-expertise"],
   ["Customs Clearance", "/services#customs-clearance"],
   ["Import Customs Clearance", "/services#import-customs-clearance"],
   ["Export Customs Clearance", "/services#export-customs-clearance"],
   ["Trade Compliance", "/services#trade-compliance"],
   ["Documentation Support", "/services#documentation-support"],
 ];
+
+const XIcon = ({ size = 16 }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M18.9 2h3.3l-7.2 8.2L23.5 22h-6.7l-5.2-6.9L5.6 22H2.3l7.7-8.8L1.9 2h6.8l4.7 6.3L18.9 2Zm-1.2 17.9h1.8L7.7 4H5.8l11.9 15.9Z" />
+  </svg>
+);
 
 export default function Footer() {
   const cfg = useSiteConfig();
@@ -30,12 +43,12 @@ export default function Footer() {
     { url: social.linkedin, Icon: Linkedin, label: "LinkedIn", className: "bg-[#0A66C2] hover:bg-[#0C66D0]" },
     { url: social.facebook, Icon: Facebook, label: "Facebook", className: "bg-[#1877F2] hover:bg-[#3B82F6]" },
     { url: social.instagram, Icon: Instagram, label: "Instagram", className: "bg-gradient-to-br from-[#F58529] via-[#DD2A7B] to-[#8134AF] hover:opacity-90" },
-    { url: social.twitter, Icon: Twitter, label: "Twitter", className: "bg-[#1DA1F2] hover:bg-[#4EA3F7]" },
+    { url: social.twitter, Icon: XIcon, label: "X", className: "bg-black hover:bg-slate-800" },
   ];
 
   return (
     <footer className="bg-navy-900 text-white">
-      <div className="container-x py-16 md:py-20 grid md:grid-cols-12 gap-10">
+      <div className="container-x py-12 md:py-20 grid md:grid-cols-12 gap-10">
         <div className="md:col-span-4">
           <Logo inverted size="lg" showText />
           <p className="mt-6 text-sm text-white/70 leading-relaxed max-w-sm">

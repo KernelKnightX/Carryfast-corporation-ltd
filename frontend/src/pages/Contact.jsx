@@ -10,9 +10,12 @@ const INFO_CARDS = [
   { icon: AlertCircle, t: "Special Requests", d: "For time-critical shipments, first-time imports of regulated products, or consignments requiring advance compliance review, contact us directly by phone before the cargo arrives. Early coordination prevents clearance delays." },
 ];
 
+const OFFICE_MAP_QUERY = "22.717449,75.872055";
+
 export default function Contact() {
   const cfg = useSiteConfig();
   const c = cfg.contact || {};
+  const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(OFFICE_MAP_QUERY)}`;
   return (
     <>
       <SEO
@@ -103,7 +106,7 @@ export default function Contact() {
           <div className="h-[560px] border border-slate-200">
             <iframe
               title="Carry Fast Corporation Office Location — Indore"
-              src={`https://www.google.com/maps?q=${encodeURIComponent(c.map_query || 'Corporate House 169 RNT Marg Indore')}&output=embed`}
+              src={`https://www.google.com/maps?q=${encodeURIComponent(OFFICE_MAP_QUERY)}&z=17&output=embed`}
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -111,6 +114,14 @@ export default function Contact() {
               referrerPolicy="no-referrer-when-downgrade"
               data-testid="contact-map"
             />
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sr-only"
+            >
+              Open Carry Fast Corporation on Google Maps
+            </a>
           </div>
         </div>
       </section>

@@ -1,21 +1,9 @@
 import { useEffect, useState } from "react";
 import { Save, Plus, Trash2 } from "lucide-react";
-import { api, API } from "@/lib/api";
+import { api } from "@/lib/api";
 import { toast } from "sonner";
 import { useSiteConfigCtx } from "@/contexts/SiteConfigContext";
 import { DEFAULT_POLICIES, POLICY_TITLES } from "@/lib/defaultPolicies";
-
-// Helper to resolve image URLs - prepend backend URL for relative paths
-const getImageUrl = (url) => {
-  if (!url) return "";
-  if (url.startsWith("http")) return url; // Already absolute
-  if (url.startsWith("/uploads/")) {
-    // Use environment variable for backend URL, fallback to API base
-    const backendUrl = process.env.REACT_APP_BACKEND_URL || API.replace(/\/api$/, "");
-    return `${backendUrl}${url}`;
-  }
-  return url;
-};
 
 const TABS = [
   { key: "company", label: "Company" },
@@ -134,7 +122,7 @@ export default function SiteConfigEditor() {
               </label>
             </div>
           </Field>
-          {cfg.company?.logo_url && <div className="md:col-span-2"><img src={getImageUrl(cfg.company.logo_url)} alt="Company logo" className="h-16 object-contain" /></div>}
+          {cfg.company?.logo_url && <div className="md:col-span-2"><img src={cfg.company.logo_url} alt="Company logo" className="h-16 object-contain" /></div>}
         </div>
       )}
 
@@ -277,7 +265,7 @@ function PoliciesEditor({ policies, policyKey, setPolicyKey, onChange, onUpload,
         </Field>
         {policy.image && (
           <div className="md:col-span-2">
-            <img src={getImageUrl(policy.image)} alt="" className="h-40 w-full object-cover border border-slate-200" />
+            <img src={policy.image} alt="" className="h-40 w-full object-cover border border-slate-200" />
           </div>
         )}
       </div>
@@ -371,7 +359,7 @@ function ListEditor({ items, onChange, newItem, fields, onUpload, uploading }) {
                   )}
                 </>
               )}
-              {f.preview && it[f.key] && <img src={getImageUrl(it[f.key])} alt="" className="mt-2 h-24 w-full object-cover border border-slate-200" />}
+              {f.preview && it[f.key] && <img src={it[f.key]} alt="" className="mt-2 h-24 w-full object-cover border border-slate-200" />}
             </div>
           ))}
         </div>

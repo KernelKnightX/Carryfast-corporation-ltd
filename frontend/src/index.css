@@ -44,7 +44,7 @@
 @layer utilities {
   .text-overline { @apply text-xs font-semibold uppercase tracking-[0.18em] text-gold-500; }
   .container-x { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
-  .section-y { @apply py-20 md:py-20; }
+  .section-y { @apply py-14 md:py-20; }
   .grid-pattern {
     background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
                       linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);

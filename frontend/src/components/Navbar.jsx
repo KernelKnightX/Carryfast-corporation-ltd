@@ -21,8 +21,8 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/90 border-b border-slate-200/70 shadow-sm">
-      <div className="container-x flex items-center justify-between h-20">
-        <Logo height="80px" width="200px" />
+      <div className="container-x flex items-center justify-between h-16 md:h-20">
+        <Logo size="lg" className="max-w-[170px] sm:max-w-[210px] overflow-hidden" />
         <nav className="hidden xl:flex items-center gap-1">
           {links.map((l) => (
             <NavLink

@@ -1,9 +1,20 @@
 import { Link } from "react-router-dom";
-import { FileCheck, Anchor, Plane, BookOpen, FileText, ArrowRight } from "lucide-react";
+import { FileCheck, Anchor, Plane, BookOpen, FileText, ArrowRight, ShieldCheck } from "lucide-react";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 
 const SERVICES = [
+  {
+    key: "customs-expertise",
+    icon: ShieldCheck,
+    img: "/logos/Logistics-in-India.jpg",
+    t: "Customs Expertise",
+    paragraphs: [
+      "Thirty years of customs operations across diverse industries has given Carry Fast Corporation practical knowledge that extends beyond routine customs clearance. Our team understands how industry-specific regulations, tariff classifications, licensing requirements, exemption notifications, and compliance obligations affect different categories of cargo before they become clearance issues.",
+      "We advise clients on customs procedures before shipments arrive, helping them prepare documentation, evaluate regulatory requirements, and address potential compliance concerns early. This proactive approach reduces unnecessary delays and supports more predictable customs processing for both regular and first-time imports and exports.",
+      "Our experience spans machinery, mining equipment, automotive components, chemicals, renewable energy equipment, consumer goods, food products, electrical goods, furniture, and other specialised cargo. Clients rely on our operational knowledge to support informed decisions throughout the customs process.",
+    ],
+  },
   {
     key: "customs-clearance",
     icon: FileCheck,
@@ -77,27 +88,6 @@ export default function Services() {
         image="/logos/contact.png"
         breadcrumbs={[{ to: "/", label: "Home" }, { label: "Our Services" }]}
       />
-
-      {/* Customs Expertise Intro */}
-      <section className="section-y bg-white">
-        <div className="container-x max-w-4xl">
-          <div className="mb-6">
-            <div className="text-overline mb-3">Customs Expertise</div>
-            <h2 className="font-display font-extrabold text-3xl md:text-4xl tracking-tight leading-tight text-navy-900">Practical customs knowledge, applied early.</h2>
-          </div>
-          <div className="space-y-5 text-slate-700 text-base leading-relaxed">
-            <p>
-              Thirty years of customs operations across diverse industries has given Carry Fast Corporation practical knowledge that extends beyond routine customs clearance. Our team understands how industry-specific regulations, tariff classifications, licensing requirements, exemption notifications, and compliance obligations affect different categories of cargo before they become clearance issues.
-            </p>
-            <p>
-              We advise clients on customs procedures before shipments arrive, helping them prepare documentation, evaluate regulatory requirements, and address potential compliance concerns early. This proactive approach reduces unnecessary delays and supports more predictable customs processing for both regular and first-time imports and exports.
-            </p>
-            <p>
-              Our experience spans machinery, mining equipment, automotive components, chemicals, renewable energy equipment, consumer goods, food products, electrical goods, furniture, and other specialised cargo. Clients rely on our operational knowledge to support informed decisions throughout the customs process.
-            </p>
-          </div>
-        </div>
-      </section>
 
       {SERVICES.map((s, i) => (
         <section id={s.key} key={s.key} className={`section-y ${i % 2 === 0 ? "bg-white" : "bg-slate-50"} border-b border-slate-200 scroll-mt-24`}>

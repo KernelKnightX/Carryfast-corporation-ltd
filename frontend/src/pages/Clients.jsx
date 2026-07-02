@@ -36,7 +36,7 @@ const LOGO_FILE_MAP = {
   "CNH Industrial": "CNH.png",
   "Kirloskar": "Kirloskar.png",
   "Force Trucks": "ForceTRUCK.png",
-  "Avaada": "Avaada.png",
+  "Avaada": "AVAADA.png",
   "O2 Power": "O2 Power.png",
   "Bharat Energy Pvt Ltd": "Bharat Energy Pvt Ltd.png",
   "Solis Hygiene Pvt Ltd": "Solis Hygiene Pvt Ltd.png",
@@ -138,7 +138,7 @@ export default function Clients() {
         <div className="container-x">
           <div className="mb-12">
             <div className="text-overline mb-5">Why Clients Trust Us</div>
-            <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight text-navy-900">Why Clients Trust Us</h2>
+            <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight text-navy-900">Built on Reliable Clearance Work</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {TRUST.map((c, i) => (

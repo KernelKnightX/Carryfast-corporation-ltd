@@ -13,6 +13,7 @@ const WHY = [
 ];
 
 const SERVICES_PREVIEW = [
+  { icon: ShieldCheck, t: "Customs Expertise", d: "Practical customs guidance built on three decades of operational experience, helping clients identify clearance issues early and avoid avoidable customs delays." },
   { icon: FileText, t: "Documentation Support", d: "Complete customs documentation preparation and verification for imports and exports, ensuring Bills of Entry, Shipping Bills, and licence paperwork are filed accurately and on time." },
   { icon: FileCheck, t: "Customs Clearance", d: "End-to-end customs clearance for air and sea shipments across all major ports, airports, ICDs, and CFS locations in India. We manage the entire process from document filing through to cargo release." },
   { icon: BookOpen, t: "Trade Compliance", d: "Ongoing monitoring of customs notifications, DGFT circulars, and import-export policy updates. We apply current regulatory requirements to your shipments and advise on licensing, restrictions, and compliance obligations." },
@@ -40,7 +41,7 @@ const INDUSTRY_TILES = [
   { icon: Wrench, t: "Food & Confectionery" },
 ];
 
-const CLIENT_TOP = ["Bridgestone India", "LiuGong India", "HEG Ltd", "Tata International", "L&T", "Ralson", "Swara Baby Products Ltd"];
+const CLIENT_TOP = ["Bridgestone India", "LiuGong India", "HEG Ltd", "Tata International", "L&T", "Ralson", "Swara Baby Products Ltd", "Avaada"];
 
 const CLIENT_LOGO_FILE_MAP = {
   "Bridgestone India": "Bridgestone India Pvt Ltd.png",
@@ -50,6 +51,7 @@ const CLIENT_LOGO_FILE_MAP = {
   "L&T": "L&T.png",
   "Ralson": "Ralson.png",
   "Swara Baby Products Ltd": "Swara Baby Products Ltd.png",
+  "Avaada": "AVAADA.png",
 };
 
 const TESTIMONIALS_FALLBACK = [
@@ -113,7 +115,7 @@ export default function Home() {
             <div className="text-overline mb-5">Services Overview</div>
             <h2 className="font-display font-extrabold text-3xl md:text-5xl tracking-tight text-navy-900">Our Services</h2>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {SERVICES_PREVIEW.map((s, i) => (
               <div key={i} data-testid={`service-preview-${i}`} className="bg-white border border-slate-200 p-8 hover:border-gold-500 hover:shadow-lg transition-all">
                 <s.icon size={28} strokeWidth={1.6} className="text-gold-500" />
