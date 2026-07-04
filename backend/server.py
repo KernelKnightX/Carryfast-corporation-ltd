@@ -15,11 +15,12 @@ import shutil
 import asyncio
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional
+from urllib.parse import quote
 
 import httplib2
 import requests
 import firebase_admin
-from firebase_admin import credentials as fb_credentials, auth as fb_auth
+from firebase_admin import credentials as fb_credentials, auth as fb_auth, storage as fb_storage
 from fastapi import FastAPI, APIRouter, Depends, HTTPException, Request, UploadFile, File, Query
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -42,6 +43,7 @@ client = AsyncIOMotorClient(mongo_url, serverSelectionTimeoutMS=MONGO_TIMEOUT_MS
 db = client[os.environ['DB_NAME']]
 
 FIREBASE_WEB_API_KEY = os.environ.get('FIREBASE_WEB_API_KEY')
+FIREBASE_STORAGE_BUCKET = os.environ.get('FIREBASE_STORAGE_BUCKET')
 
 # ---------- Firebase Admin ----------
 sa_path = os.environ.get('FIREBASE_SA_PATH')
@@ -68,7 +70,8 @@ try:
             cred_obj = fb_credentials.Certificate(sa_candidate)
 
         if cred_obj and not firebase_admin._apps:
-            firebase_admin.initialize_app(cred_obj)
+            options = {"storageBucket": FIREBASE_STORAGE_BUCKET} if FIREBASE_STORAGE_BUCKET else None
+            firebase_admin.initialize_app(cred_obj, options)
             logger.info(f"Firebase Admin initialised for project {fb_project}")
     else:
         logger.warning("FIREBASE_SA_PATH not set; Firebase Admin not initialised.")
@@ -85,9 +88,38 @@ if not UPLOAD_DIR.is_absolute():
     UPLOAD_DIR = ROOT_DIR / UPLOAD_DIR
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 PUBLIC_BASE_URL = os.environ.get('PUBLIC_BASE_URL', '').rstrip('/')
+UPLOAD_STORAGE_BACKEND = os.environ.get('UPLOAD_STORAGE_BACKEND', 'firebase').lower()
+UPLOAD_MAX_BYTES = 8 * 1024 * 1024
+UPLOAD_ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+UPLOAD_ALLOWED_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
 
 # ---------- Helpers ----------
 bearer = HTTPBearer(auto_error=False)
+
+def firebase_storage_available() -> bool:
+    return bool(
+        UPLOAD_STORAGE_BACKEND == "firebase"
+        and FIREBASE_STORAGE_BUCKET
+        and firebase_admin._apps
+    )
+
+
+def firebase_download_url(bucket_name: str, object_path: str, token: str) -> str:
+    encoded_path = quote(object_path, safe="")
+    return f"https://firebasestorage.googleapis.com/v0/b/{bucket_name}/o/{encoded_path}?alt=media&token={token}"
+
+
+async def upload_to_firebase_storage(name: str, content: bytes, content_type: str) -> str:
+    bucket = fb_storage.bucket(FIREBASE_STORAGE_BUCKET)
+    object_path = f"admin-uploads/{name}"
+    token = uuid.uuid4().hex
+    blob = bucket.blob(object_path)
+    blob.cache_control = "public, max-age=31536000, immutable"
+    blob.metadata = {"firebaseStorageDownloadTokens": token}
+
+    await asyncio.to_thread(blob.upload_from_string, content, content_type=content_type)
+    await asyncio.to_thread(blob.patch)
+    return firebase_download_url(bucket.name, object_path, token)
 
 def slugify(value: str) -> str:
     value = value.lower().strip()
@@ -430,28 +462,29 @@ async def admin_update_site_config(body: SiteConfigIn, current=Depends(get_curre
 
 # ---------- Admin: Uploads ----------
 @api_router.post("/admin/upload")
-async def admin_upload(file: UploadFile = File(...), current=Depends(get_current_admin)):
-    ALLOWED = {"image/jpeg", "image/png", "image/webp", "image/gif"}
-    if file.content_type not in ALLOWED:
-        raise HTTPException(status_code=400, detail=f"Unsupported type. Allowed: {sorted(ALLOWED)}")
+async def admin_upload(request: Request, file: UploadFile = File(...), current=Depends(get_current_admin)):
+    if file.content_type not in UPLOAD_ALLOWED_TYPES:
+        raise HTTPException(status_code=400, detail=f"Unsupported type. Allowed: {sorted(UPLOAD_ALLOWED_TYPES)}")
+
     ext = Path(file.filename or "").suffix.lower() or ".jpg"
-    safe_ext = ext if ext in {".jpg", ".jpeg", ".png", ".webp", ".gif"} else ".jpg"
+    safe_ext = ext if ext in UPLOAD_ALLOWED_EXTS else ".jpg"
     name = f"{uuid.uuid4().hex}{safe_ext}"
+    content = await file.read(UPLOAD_MAX_BYTES + 1)
+    size = len(content)
+    if size > UPLOAD_MAX_BYTES:
+        raise HTTPException(status_code=413, detail="File exceeds 8MB limit")
+
+    if firebase_storage_available():
+        try:
+            public_url = await upload_to_firebase_storage(name, content, file.content_type)
+            return {"ok": True, "url": public_url, "filename": name, "size": size, "storage": "firebase"}
+        except Exception as e:
+            logger.error(f"Firebase Storage upload failed; falling back to local upload: {e}")
+
     dest = UPLOAD_DIR / name
-    size = 0
-    with dest.open("wb") as out:
-        while True:
-            chunk = await file.read(1024 * 1024)
-            if not chunk:
-                break
-            size += len(chunk)
-            if size > 8 * 1024 * 1024:
-                out.close()
-                dest.unlink(missing_ok=True)
-                raise HTTPException(status_code=413, detail="File exceeds 8MB limit")
-            out.write(chunk)
-    public_url = f"{PUBLIC_BASE_URL}/uploads/{name}" if PUBLIC_BASE_URL else f"/uploads/{name}"
-    return {"ok": True, "url": public_url, "filename": name, "size": size}
+    dest.write_bytes(content)
+    public_url = f"{PUBLIC_BASE_URL}/uploads/{name}" if PUBLIC_BASE_URL else str(request.url_for("uploads", path=name))
+    return {"ok": True, "url": public_url, "filename": name, "size": size, "storage": "local"}
 
 
 # ---------- Admin: Blog CMS ----------
