@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
-import { getOptimizedLogoAsset, resolveAssetUrl } from "@/lib/assets";
+import { resolveAssetUrl } from "@/lib/assets";
 
 /**
  * Compact, image-driven hero for inner pages. Not a giant solid box.
@@ -13,40 +13,20 @@ import { getOptimizedLogoAsset, resolveAssetUrl } from "@/lib/assets";
  *   badges      — optional [{ label, sub }] for a bottom strip
  */
 export default function PageHero({ label, title, subtitle, image, breadcrumbs = [], badges = [] }) {
-  const optimizedLogo = getOptimizedLogoAsset(image);
-
   return (
     <section className="relative bg-navy-900 text-white overflow-hidden">
       <div className="absolute inset-0 grid-pattern opacity-25" />
       {image && (
         <div className="absolute inset-0 pointer-events-none">
-          {optimizedLogo ? (
-            <picture className="block w-full h-full">
-              <source type="image/avif" srcSet={`${optimizedLogo.base}-lg.avif 1920w, ${optimizedLogo.base}-md.avif 1280w, ${optimizedLogo.base}-sm.avif 800w`} />
-              <source type="image/webp" srcSet={`${optimizedLogo.base}-lg.webp 1920w, ${optimizedLogo.base}-md.webp 1280w, ${optimizedLogo.base}-sm.webp 800w`} />
-              <img
-                src={optimizedLogo.src}
-                alt=""
-                className="w-full h-full object-cover"
-                loading="eager"
-                fetchPriority="high"
-                width={1920}
-                height={1280}
-                srcSet={`${optimizedLogo.base}-lg.webp 1920w, ${optimizedLogo.base}-md.webp 1280w, ${optimizedLogo.base}-sm.webp 800w`}
-                sizes="(min-width:1024px) 50vw, 100vw"
-              />
-            </picture>
-          ) : (
-            <img
-              src={resolveAssetUrl(image)}
-              alt=""
-              className="w-full h-full object-cover"
-              loading="eager"
-              fetchPriority="high"
-              width={1920}
-              height={1280}
-            />
-          )}
+          <img
+            src={resolveAssetUrl(image)}
+            alt=""
+            className="w-full h-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+            width={1920}
+            height={1280}
+          />
           {/* stronger black fade on left so text stays visible against the image */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/00 to-transparent" />
         </div>

@@ -4,6 +4,14 @@ import { DEFAULT_POLICIES } from "@/lib/defaultPolicies";
 
 const SiteConfigContext = createContext(null);
 
+const normalizePageHeroes = (pageHeroes = {}) => {
+  const next = { ...pageHeroes };
+  if (next.expertise?.image?.endsWith("/uploads/LOGISTIC1STimage.png")) {
+    next.expertise = { ...next.expertise, image: "/logos/LOGISTIC1STimage.png" };
+  }
+  return next;
+};
+
 // Fallback used only while the first fetch is in-flight; matches backend DEFAULT.
 const FALLBACK = {
   company: {
@@ -63,7 +71,7 @@ const FALLBACK = {
   ],
   page_heroes: {
     about: { image: "/logos/aboutus.jpg" },
-    expertise: { image: "/uploads/LOGISTIC1STimage.png" },
+    expertise: { image: "/logos/LOGISTIC1STimage.png" },
     services: { image: "/logos/contact.png" },
     clients: { image: "/logos/ourclients2.jpg" },
     blog: { image: "/logos/blogs.jpg" },
@@ -103,7 +111,7 @@ export const SiteConfigProvider = ({ children }) => {
         ...data,
         contact: { ...FALLBACK.contact, ...(data.contact || {}) },
         company: { ...FALLBACK.company, ...(data.company || {}) },
-        page_heroes: { ...FALLBACK.page_heroes, ...(data.page_heroes || {}) },
+        page_heroes: normalizePageHeroes({ ...FALLBACK.page_heroes, ...(data.page_heroes || {}) }),
         testimonials: { ...FALLBACK.testimonials, ...(data.testimonials || {}) },
         policies: { ...FALLBACK.policies, ...(data.policies || {}) },
       });

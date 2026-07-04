@@ -20,7 +20,7 @@ const TABS = [
 
 const PAGE_HERO_PAGES = [
   { key: "about", label: "About Us", path: "/about", image: "/logos/aboutus.jpg" },
-  { key: "expertise", label: "Our Expertise", path: "/expertise", image: "/uploads/LOGISTIC1STimage.png" },
+  { key: "expertise", label: "Our Expertise", path: "/expertise", image: "/logos/LOGISTIC1STimage.png" },
   { key: "services", label: "Our Services", path: "/services", image: "/logos/contact.png" },
   { key: "clients", label: "Our Clients", path: "/clients", image: "/logos/ourclients2.jpg" },
   { key: "blog", label: "Blog", path: "/blog", image: "/logos/blogs.jpg" },
@@ -31,6 +31,14 @@ const DEFAULT_PAGE_HEROES = PAGE_HERO_PAGES.reduce((acc, page) => {
   acc[page.key] = { image: page.image };
   return acc;
 }, {});
+
+const normalizePageHeroes = (pageHeroes = {}) => {
+  const next = { ...pageHeroes };
+  if (next.expertise?.image?.endsWith("/uploads/LOGISTIC1STimage.png")) {
+    next.expertise = { ...next.expertise, image: "/logos/LOGISTIC1STimage.png" };
+  }
+  return next;
+};
 
 export default function SiteConfigEditor() {
   const ctx = useSiteConfigCtx();
@@ -43,7 +51,7 @@ export default function SiteConfigEditor() {
   useEffect(() => {
     api.get("/admin/site-config").then((r) => setCfg({
       ...r.data,
-      page_heroes: { ...DEFAULT_PAGE_HEROES, ...(r.data.page_heroes || {}) },
+      page_heroes: normalizePageHeroes({ ...DEFAULT_PAGE_HEROES, ...(r.data.page_heroes || {}) }),
       policies: { ...DEFAULT_POLICIES, ...(r.data.policies || {}) },
     }));
   }, []);
@@ -98,9 +106,9 @@ export default function SiteConfigEditor() {
       const { _id, updated_at, updated_by, ...payload } = cfg;
       await api.put("/admin/site-config", payload);
       toast.success("Saved. Refreshing live site config…");
-      ctx?.refresh();
+      await ctx?.refresh?.();
     } catch (e) {
-      toast.error("Save failed.");
+      toast.error(e?.response?.data?.detail || e?.message || "Save failed.");
     } finally {
       setBusy(false);
     }

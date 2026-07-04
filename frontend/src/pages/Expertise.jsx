@@ -157,7 +157,7 @@ const WHY_EXPANDED = [
 
 export default function Expertise() {
   const cfg = useSiteConfig();
-  const heroImage = cfg.page_heroes?.expertise?.image || "/uploads/LOGISTIC1STimage.png";
+  const heroImage = cfg.page_heroes?.expertise?.image || "/logos/LOGISTIC1STimage.png";
 
   return (
     <>
