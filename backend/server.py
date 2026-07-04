@@ -324,7 +324,7 @@ DEFAULT_SITE_CONFIG = {
     ],
     "page_heroes": {
         "about": {"image": "/logos/aboutus.jpg"},
-        "expertise": {"image": "/uploads/LOGISTIC1STimage.png"},
+        "expertise": {"image": "/logos/LOGISTIC1STimage.png"},
         "services": {"image": "/logos/contact.png"},
         "clients": {"image": "/logos/ourclients2.jpg"},
         "blog": {"image": "/logos/blogs.jpg"},
