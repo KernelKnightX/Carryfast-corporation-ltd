@@ -277,6 +277,7 @@ class SiteConfigIn(BaseModel):
     contact: dict = {}
     stats: List[dict] = []
     hero_slides: List[dict] = []
+    page_heroes: dict = {}
     testimonials: dict = {}
     policies: dict = {}
     footer: dict = {}
@@ -321,6 +322,14 @@ DEFAULT_SITE_CONFIG = {
         {"image": "/logos/logistic3.jpg", "overline": "12,000+ Shipments · 99.5% On-Time", "title_lines": ["Cargo clears.", "Operations"], "title_span": "never wait.", "subtitle": "Bill of Entry filed the same day. Examination handled at the port by our team. Documentation pre-validated before submission. A 99.5% on-time rate maintained year after year."},
         {"image": "/logos/logistic4.jpg", "overline": "CONCOR Best Customs Broker · Since 1997", "title_lines": ["Recognised by CONCOR", "every year"], "title_span": "since 1997.", "subtitle": "An unbroken record of recognition across nearly three decades — awarded annually by Container Corporation of India for consistent operational performance."},
     ],
+    "page_heroes": {
+        "about": {"image": "/logos/aboutus.jpg"},
+        "expertise": {"image": "/uploads/LOGISTIC1STimage.png"},
+        "services": {"image": "/logos/contact.png"},
+        "clients": {"image": "/logos/ourclients2.jpg"},
+        "blog": {"image": "/logos/blogs.jpg"},
+        "contact": {"image": "/logos/contact us.jpg"},
+    },
     "testimonials": {
         "heading": "What Our Clients Say",
         "subtitle": "Client feedback from importers and exporters who rely on Carry Fast for customs clearance and trade compliance.",
