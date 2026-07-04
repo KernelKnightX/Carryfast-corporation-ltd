@@ -5,6 +5,7 @@ import { api } from "@/lib/api";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
 import { resolveAssetUrl } from "@/lib/assets";
+import { useSiteConfig } from "@/contexts/SiteConfigContext";
 
 const CATEGORIES = [
   {
@@ -43,8 +44,10 @@ const CATEGORIES = [
 ];
 
 export default function Blog() {
+  const cfg = useSiteConfig();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const heroImage = cfg.page_heroes?.blog?.image || "/logos/blogs.jpg";
 
   useEffect(() => {
     api.get("/blog").then((r) => setPosts(r.data)).catch(() => {}).finally(() => setLoading(false));
@@ -64,7 +67,7 @@ export default function Blog() {
         label="Blog"
         title={<>Carry Fast Corporation <span className="text-gold-500">Blog.</span></>}
         subtitle="Indian customs regulations, trade policy and import-export procedures change frequently. We track notifications from CBIC, DGFT and ICEGATE — and translate them into practical operational guidance for importers, exporters and supply chain teams."
-        image="/logos/blogs.jpg"
+        image={heroImage}
         breadcrumbs={[{ to: "/", label: "Home" }, { label: "Blog" }]}
       />
 

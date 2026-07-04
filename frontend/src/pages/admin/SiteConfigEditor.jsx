@@ -11,11 +11,26 @@ const TABS = [
   { key: "contact", label: "Contact Info" },
   { key: "stats", label: "Stats" },
   { key: "hero_slides", label: "Hero Slides" },
+  { key: "page_heroes", label: "Page Heroes" },
   { key: "testimonials", label: "Testimonials" },
   { key: "policies", label: "Policies" },
   { key: "footer", label: "Footer" },
   { key: "social", label: "Social Links" },
 ];
+
+const PAGE_HERO_PAGES = [
+  { key: "about", label: "About Us", path: "/about", image: "/logos/aboutus.jpg" },
+  { key: "expertise", label: "Our Expertise", path: "/expertise", image: "/uploads/LOGISTIC1STimage.png" },
+  { key: "services", label: "Our Services", path: "/services", image: "/logos/contact.png" },
+  { key: "clients", label: "Our Clients", path: "/clients", image: "/logos/ourclients2.jpg" },
+  { key: "blog", label: "Blog", path: "/blog", image: "/logos/blogs.jpg" },
+  { key: "contact", label: "Contact Us", path: "/contact", image: "/logos/contact us.jpg" },
+];
+
+const DEFAULT_PAGE_HEROES = PAGE_HERO_PAGES.reduce((acc, page) => {
+  acc[page.key] = { image: page.image };
+  return acc;
+}, {});
 
 export default function SiteConfigEditor() {
   const ctx = useSiteConfigCtx();
@@ -28,12 +43,20 @@ export default function SiteConfigEditor() {
   useEffect(() => {
     api.get("/admin/site-config").then((r) => setCfg({
       ...r.data,
+      page_heroes: { ...DEFAULT_PAGE_HEROES, ...(r.data.page_heroes || {}) },
       policies: { ...DEFAULT_POLICIES, ...(r.data.policies || {}) },
     }));
   }, []);
 
   const setField = (section, key, value) => setCfg((c) => ({ ...c, [section]: { ...(c[section] || {}), [key]: value } }));
   const setSection = (section, value) => setCfg((c) => ({ ...c, [section]: value }));
+  const setPageHeroImage = (pageKey, image) => setCfg((c) => ({
+    ...c,
+    page_heroes: {
+      ...(c.page_heroes || {}),
+      [pageKey]: { ...((c.page_heroes || {})[pageKey] || {}), image },
+    },
+  }));
 
   const handleLogoUpload = async (file) => {
     if (!file) return;
@@ -172,6 +195,50 @@ export default function SiteConfigEditor() {
             { key: "subtitle", label: "Subtitle", textarea: true },
           ]}
         />
+      )}
+
+      {tab === "page_heroes" && (
+        <div className="bg-white border border-slate-200 p-6 space-y-5">
+          <div>
+            <div className="text-overline">Inner Page Heroes</div>
+            <p className="mt-2 text-sm text-slate-600">Update the hero image shown at the top of each public page.</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-5">
+            {PAGE_HERO_PAGES.map((page) => {
+              const image = cfg.page_heroes?.[page.key]?.image || page.image;
+              return (
+                <div key={page.key} className="border border-slate-200 p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <div className="font-display font-bold text-lg text-navy-900">{page.label}</div>
+                      <div className="mt-1 text-xs font-mono text-slate-500">{page.path}</div>
+                    </div>
+                    <a href={page.path} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-gold-500 hover:text-gold-600">View</a>
+                  </div>
+                  <div className="mt-4 space-y-3">
+                    <input
+                      className={input}
+                      value={image}
+                      onChange={(e) => setPageHeroImage(page.key, e.target.value)}
+                      placeholder="https://... or /uploads/image.png"
+                    />
+                    <label className="inline-flex items-center justify-center gap-2 rounded-sm border border-slate-300 px-4 py-2 text-sm text-navy-900 hover:border-gold-500 hover:bg-slate-50 cursor-pointer transition-colors">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => handleImageUpload(e.target.files?.[0], (url) => setPageHeroImage(page.key, url))}
+                        disabled={uploading}
+                      />
+                      {uploading ? "Uploading image..." : "Upload image file"}
+                    </label>
+                    {image && <img src={resolveAssetUrl(image)} alt="" className="h-32 w-full object-cover border border-slate-200" />}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       )}
 
       {tab === "testimonials" && (

@@ -15,6 +15,7 @@ const OFFICE_MAP_QUERY = "22.717449,75.872055";
 export default function Contact() {
   const cfg = useSiteConfig();
   const c = cfg.contact || {};
+  const heroImage = cfg.page_heroes?.contact?.image || "/logos/contact us.jpg";
   const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(OFFICE_MAP_QUERY)}`;
   return (
     <>
@@ -28,7 +29,7 @@ export default function Contact() {
         label="Contact Us"
         title={<>Get in <span className="text-gold-500">touch.</span></>}
         subtitle="Talk to our customs clearance team directly. For general enquiries use the form below. For time-sensitive shipments, examinations or port queries — call us straight away."
-        image="/logos/contact us.jpg"
+        image={heroImage}
         breadcrumbs={[{ to: "/", label: "Home" }, { label: "Contact Us" }]}
       />
 

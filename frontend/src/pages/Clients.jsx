@@ -1,6 +1,7 @@
 import { ShieldCheck, Brain, Headphones } from "lucide-react";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
+import { useSiteConfig } from "@/contexts/SiteConfigContext";
 
 const CLIENTS = [
   "Bridgestone India Pvt Ltd", "LiuGong India Pvt Ltd", "HEG Ltd", "Tata International Ltd",
@@ -46,6 +47,9 @@ const LOGO_FILE_MAP = {
 };
 
 export default function Clients() {
+  const cfg = useSiteConfig();
+  const heroImage = cfg.page_heroes?.clients?.image || "/logos/ourclients2.jpg";
+
   return (
     <>
       <SEO
@@ -58,7 +62,7 @@ export default function Clients() {
         label="Our Clients"
         title={<>Companies <span className="text-gold-500">We Serve.</span></>}
         subtitle="Carry Fast Corporation has worked with some of India's most demanding importers and exporters — from Bridgestone and Tata International to Siemens, Mahindra and Kirloskar — across manufacturing, energy, automotive and trading."
-        image="/logos/ourclients2.jpg"
+        image={heroImage}
         breadcrumbs={[{ to: "/", label: "Home" }, { label: "Our Clients" }]}
       />
 

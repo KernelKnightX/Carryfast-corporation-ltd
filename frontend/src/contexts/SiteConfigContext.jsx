@@ -61,6 +61,14 @@ const FALLBACK = {
       subtitle: "An unbroken record of recognition across nearly three decades — awarded annually by Container Corporation of India",
     },
   ],
+  page_heroes: {
+    about: { image: "/logos/aboutus.jpg" },
+    expertise: { image: "/uploads/LOGISTIC1STimage.png" },
+    services: { image: "/logos/contact.png" },
+    clients: { image: "/logos/ourclients2.jpg" },
+    blog: { image: "/logos/blogs.jpg" },
+    contact: { image: "/logos/contact us.jpg" },
+  },
   testimonials: {
     heading: "What Our Clients Say",
     subtitle: "Client feedback from importers and exporters who trust Carry Fast for customs clearance and trade compliance.",
@@ -95,6 +103,7 @@ export const SiteConfigProvider = ({ children }) => {
         ...data,
         contact: { ...FALLBACK.contact, ...(data.contact || {}) },
         company: { ...FALLBACK.company, ...(data.company || {}) },
+        page_heroes: { ...FALLBACK.page_heroes, ...(data.page_heroes || {}) },
         testimonials: { ...FALLBACK.testimonials, ...(data.testimonials || {}) },
         policies: { ...FALLBACK.policies, ...(data.policies || {}) },
       });

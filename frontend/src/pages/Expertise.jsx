@@ -1,6 +1,7 @@
 import { Award, Zap, ShieldCheck, Eye, Users, FileText } from "lucide-react";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
+import { useSiteConfig } from "@/contexts/SiteConfigContext";
 
 const INDUSTRIES = [
   {
@@ -155,6 +156,9 @@ const WHY_EXPANDED = [
 ];
 
 export default function Expertise() {
+  const cfg = useSiteConfig();
+  const heroImage = cfg.page_heroes?.expertise?.image || "/uploads/LOGISTIC1STimage.png";
+
   return (
     <>
       <SEO
@@ -167,7 +171,7 @@ export default function Expertise() {
         label="Our Expertise"
         title={<>Industry-deep <span className="text-gold-500">customs expertise.</span></>}
         subtitle="Each industry carries its own HSN code sensitivities, licensing requirements and examination patterns. Over 30 years, we have built working knowledge across major sectors — from heavy mining equipment to solar modules, pharma raw materials to confectionery."
-        image="/uploads/LOGISTIC1STimage.png"
+        image={heroImage}
         breadcrumbs={[{ to: "/", label: "Home" }, { label: "Our Expertise" }]}
       />
 

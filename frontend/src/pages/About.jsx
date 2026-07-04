@@ -1,6 +1,7 @@
 import { ShieldCheck, Zap, CircleCheckBig, Users } from "lucide-react";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
+import { useSiteConfig } from "@/contexts/SiteConfigContext";
 
 const VALUES = [
   { icon: ShieldCheck, t: "Reliability", d: "Every shipment receives the same standard of attention, whether it is a routine consignment or a time-critical cargo. Clients should never need to follow up twice on the same issue." },
@@ -26,6 +27,9 @@ const LEADERS = [
 ];
 
 export default function About() {
+  const cfg = useSiteConfig();
+  const heroImage = cfg.page_heroes?.about?.image || "/logos/aboutus.jpg";
+
   return (
     <>
       <SEO
@@ -38,7 +42,7 @@ export default function About() {
         label="About Us"
         title={<>Three decades. <span className="text-gold-500">One trusted name in customs.</span></>}
         subtitle="Established in Indore in 1995, Carry Fast Corporation has grown into one of central India's most experienced customs clearance firms — handling more than 12,000 shipments every year across India's major ports, airports, ICDs and CFS locations."
-        image="/logos/aboutus.jpg"
+        image={heroImage}
         breadcrumbs={[{ to: "/", label: "Home" }, { label: "About Us" }]}
       />
 

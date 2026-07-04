@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { FileCheck, Anchor, Plane, BookOpen, FileText, ArrowRight, ShieldCheck } from "lucide-react";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
+import { useSiteConfig } from "@/contexts/SiteConfigContext";
 
 const SERVICES = [
   {
@@ -73,6 +74,9 @@ const SERVICES = [
 ];
 
 export default function Services() {
+  const cfg = useSiteConfig();
+  const heroImage = cfg.page_heroes?.services?.image || "/logos/contact.png";
+
   return (
     <>
       <SEO
@@ -85,7 +89,7 @@ export default function Services() {
         label="Our Services"
         title={<>Five services. <span className="text-gold-500">One trusted partner.</span></>}
         subtitle="A complete customs offering — clearance, import, export, compliance and documentation — delivered by an AEO-certified F-Card licensed firm with three decades of operational experience."
-        image="/logos/contact.png"
+        image={heroImage}
         breadcrumbs={[{ to: "/", label: "Home" }, { label: "Our Services" }]}
       />
 
