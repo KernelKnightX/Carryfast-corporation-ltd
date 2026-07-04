@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { ArrowRight, FileCheck, ShieldCheck, BookOpen, FileText, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSiteConfig } from "@/contexts/SiteConfigContext";
+import { resolveAssetUrl } from "@/lib/assets";
 
 const SERVICE_CARDS = [
   { icon: FileCheck, t: "Customs Clearance", d: "Full Bill of Entry & Shipping Bill cycle — filed, assessed, examined, released on time." },
-  { icon: ShieldCheck, t: "Customs Services", d: "AEO-certified intermediary handling classification, valuation, duty calc & compliance." },
+  { icon: ShieldCheck, t: "Customs Services", d: "Intermediary handling classification, valuation, duty calc & compliance." },
   { icon: BookOpen, t: "Trade Compliance", d: "We track CBIC, DGFT and BIS changes and apply them before filing — not after." },
   { icon: FileText, t: "Documentation", d: "Bill of Entry, Shipping Bill, COO and supporting paperwork — prepared and verified." },
 ];
@@ -85,7 +86,7 @@ export default function HeroSlider() {
             })()
           ) : (
             <img
-              src={sl.image}
+              src={resolveAssetUrl(sl.image)}
               alt={sl.overline || ""}
               className="w-full h-full object-cover"
               loading={idx === i ? "eager" : "lazy"}
@@ -114,9 +115,6 @@ export default function HeroSlider() {
             <div className="mt-7 flex flex-wrap gap-3">
               <Link to="/contact" data-testid="hero-cta-contact" className="inline-flex items-center gap-2 bg-gold-500 text-white px-6 py-3.5 text-sm font-semibold tracking-wide hover:bg-gold-600 transition-colors">
                 Contact Us <ArrowRight size={16} />
-              </Link>
-              <Link to="/services" data-testid="hero-cta-services" className="inline-flex items-center gap-2 border-2 border-white/70 text-white px-6 py-3.5 text-sm font-semibold tracking-wide hover:bg-white hover:text-navy-900 transition-colors">
-                Our Services
               </Link>
             </div>
           </div>

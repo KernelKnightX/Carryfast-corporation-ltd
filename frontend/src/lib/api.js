@@ -3,6 +3,7 @@ import { firebaseAuth } from "@/lib/firebase";
 
 const BACKEND_URL = (process.env.REACT_APP_BACKEND_URL || "").replace(/\/$/, "");
 export const API = BACKEND_URL ? `${BACKEND_URL}/api` : "/api";
+export const BACKEND_ORIGIN = BACKEND_URL;
 
 export const api = axios.create({
   baseURL: API,

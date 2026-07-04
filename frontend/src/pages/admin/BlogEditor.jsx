@@ -4,6 +4,7 @@ import { ArrowLeft, Save, Upload, ImagePlus, Trash2 } from "lucide-react";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 import { ADMIN_URL } from "@/lib/firebase";
+import { resolveAssetUrl } from "@/lib/assets";
 
 const empty = {
   title: "", excerpt: "", content: "", cover_image: "", og_image: "",
@@ -172,7 +173,7 @@ function ImageField({ value, onChange, onUpload, uploading, testId }) {
     <div className="space-y-3">
       {value ? (
         <div className="relative group">
-          <img src={value} alt="" className="w-full h-40 object-cover border border-slate-200" />
+          <img src={resolveAssetUrl(value)} alt="" className="w-full h-40 object-cover border border-slate-200" />
           <button type="button" onClick={() => onChange("")} className="absolute top-2 right-2 bg-white/90 hover:bg-white text-red-600 p-1.5 shadow opacity-0 group-hover:opacity-100 transition-opacity">
             <Trash2 size={14} />
           </button>

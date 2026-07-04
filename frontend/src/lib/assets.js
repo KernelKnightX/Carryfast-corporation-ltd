@@ -1,0 +1,38 @@
+import { BACKEND_ORIGIN } from "@/lib/api";
+
+const ABSOLUTE_URL_RE = /^(?:https?:)?\/\//i;
+const LOGO_VARIANT_RE = /-(?:lg|md|sm)$/i;
+
+export function resolveAssetUrl(url) {
+  if (!url || typeof url !== "string") return url;
+
+  const value = url.trim();
+  if (!value || ABSOLUTE_URL_RE.test(value) || value.startsWith("data:") || value.startsWith("blob:")) {
+    return value;
+  }
+
+  if (value.startsWith("/uploads/")) {
+    return BACKEND_ORIGIN ? `${BACKEND_ORIGIN}${value}` : value;
+  }
+
+  const uploadsIndex = value.indexOf("/uploads/");
+  if (uploadsIndex >= 0) {
+    const uploadPath = value.slice(uploadsIndex);
+    return BACKEND_ORIGIN ? `${BACKEND_ORIGIN}${uploadPath}` : uploadPath;
+  }
+
+  return value;
+}
+
+export function getOptimizedLogoAsset(url) {
+  if (!url || typeof url !== "string") return null;
+
+  const value = url.trim();
+  if (!value.startsWith("/logos/")) return null;
+
+  const baseWithoutExt = value.replace(/\.[^/.]+$/, "");
+  return {
+    base: baseWithoutExt.replace(LOGO_VARIANT_RE, ""),
+    src: value,
+  };
+}

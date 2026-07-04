@@ -39,6 +39,7 @@ const INDUSTRY_TILES = [
   { icon: ShoppingBag, t: "Personal Care & Hygiene" },
   { icon: Lightbulb, t: "Electrical & Electronics" },
   { icon: Wrench, t: "Food & Confectionery" },
+  { icon: Cog, t: "Construction & Infrastructure", hideOnDesktop: true },
 ];
 
 const CLIENT_TOP = ["Bridgestone India", "LiuGong India", "HEG Ltd", "Tata International", "L&T", "Ralson", "Swara Baby Products Ltd", "Avaada"];
@@ -186,7 +187,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3">
             {INDUSTRY_TILES.map((it, i) => (
-              <div key={i} data-testid={`industry-tile-${i}`} className="bg-white border border-slate-200 p-6 text-center hover:bg-navy-900 hover:text-white transition-colors group">
+              <div key={i} data-testid={`industry-tile-${i}`} className={`bg-white border border-slate-200 p-6 text-center hover:bg-navy-900 hover:text-white transition-colors group ${it.hideOnDesktop ? "lg:hidden" : ""}`}>
                 <it.icon size={26} className="mx-auto text-gold-500" strokeWidth={1.6} />
                 <h4 className="mt-4 font-semibold text-xs leading-snug text-navy-900 group-hover:text-white transition-colors">{it.t}</h4>
               </div>
@@ -211,8 +212,13 @@ export default function Home() {
             {CLIENT_TOP.map((c, i) => {
               const logoFile = CLIENT_LOGO_FILE_MAP[c];
               const logoSrc = logoFile ? encodeURI(`/logos/${logoFile}`) : null;
+              const hideDesktop = i === CLIENT_TOP.length - 1;
               return (
-                <div key={i} data-testid={`client-${i}`} className="bg-white border border-slate-200 p-6 flex flex-col items-center justify-center text-center min-h-[140px] hover:bg-slate-50 transition-colors group">
+                <div
+                  key={i}
+                  data-testid={`client-${i}`}
+                  className={`bg-white border border-slate-200 p-6 flex flex-col items-center justify-center text-center min-h-[140px] hover:bg-slate-50 transition-colors group ${hideDesktop ? "lg:hidden" : ""}`}
+                >
                   {logoSrc ? (
                     <img src={logoSrc} alt={c} className="max-h-12 max-w-full object-contain mb-4" />
                   ) : (

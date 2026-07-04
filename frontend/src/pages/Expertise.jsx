@@ -167,7 +167,7 @@ export default function Expertise() {
         label="Our Expertise"
         title={<>Industry-deep <span className="text-gold-500">customs expertise.</span></>}
         subtitle="Each industry carries its own HSN code sensitivities, licensing requirements and examination patterns. Over 30 years, we have built working knowledge across major sectors — from heavy mining equipment to solar modules, pharma raw materials to confectionery."
-        image="/logos/Logistics-in-India.jpg"
+        image="/uploads/LOGISTIC1STimage.png"
         breadcrumbs={[{ to: "/", label: "Home" }, { label: "Our Expertise" }]}
       />
 

@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { api } from "@/lib/api";
 import SEO from "@/components/SEO";
 import { ArrowLeft } from "lucide-react";
+import { resolveAssetUrl } from "@/lib/assets";
 
 // Minimal markdown-ish renderer for headings, paragraphs, lists
 function renderMarkdown(md = "") {
@@ -49,7 +50,7 @@ export default function BlogDetail() {
         title={`${post.meta_title || post.title} | Carry Fast`}
         description={post.meta_description || post.excerpt}
         keywords={post.meta_keywords || (post.tags || []).join(", ")}
-        image={post.cover_image}
+        image={resolveAssetUrl(post.cover_image)}
       />
       <article className="bg-white">
         <header className="bg-navy-900 text-white py-20 md:py-28">
@@ -67,7 +68,7 @@ export default function BlogDetail() {
 
         {post.cover_image && (
           <div className="container-x max-w-5xl -mt-12">
-            <img src={post.cover_image} alt={post.title} className="w-full h-[420px] object-cover shadow-xl" />
+            <img src={resolveAssetUrl(post.cover_image)} alt={post.title} className="w-full h-[420px] object-cover shadow-xl" />
           </div>
         )}
 

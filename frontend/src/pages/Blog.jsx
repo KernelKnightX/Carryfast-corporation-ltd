@@ -4,6 +4,7 @@ import { ArrowRight, FileText, BookOpen, TrendingUp } from "lucide-react";
 import { api } from "@/lib/api";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
+import { resolveAssetUrl } from "@/lib/assets";
 
 const CATEGORIES = [
   {
@@ -76,7 +77,7 @@ export default function Blog() {
               <div className="grid md:grid-cols-12 gap-10 items-center">
                 {featured.cover_image && (
                   <div className="md:col-span-7 h-[420px] overflow-hidden">
-                    <img src={featured.cover_image} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={resolveAssetUrl(featured.cover_image)} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   </div>
                 )}
                 <div className="md:col-span-5">
@@ -108,7 +109,7 @@ export default function Blog() {
                 <Link key={p.id} to={`/blog/${p.slug}`} data-testid={`blog-card-${p.slug}`} className="group block bg-white border border-slate-200 hover:border-gold-500 hover:shadow-lg transition-all">
                   {p.cover_image && (
                     <div className="h-52 overflow-hidden bg-slate-100">
-                      <img src={p.cover_image} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <img src={resolveAssetUrl(p.cover_image)} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     </div>
                   )}
                   <div className="p-6">

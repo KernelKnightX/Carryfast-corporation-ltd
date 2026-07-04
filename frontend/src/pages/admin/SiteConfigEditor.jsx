@@ -4,6 +4,7 @@ import { api } from "@/lib/api";
 import { toast } from "sonner";
 import { useSiteConfigCtx } from "@/contexts/SiteConfigContext";
 import { DEFAULT_POLICIES, POLICY_TITLES } from "@/lib/defaultPolicies";
+import { resolveAssetUrl } from "@/lib/assets";
 
 const TABS = [
   { key: "company", label: "Company" },
@@ -122,7 +123,7 @@ export default function SiteConfigEditor() {
               </label>
             </div>
           </Field>
-          {cfg.company?.logo_url && <div className="md:col-span-2"><img src={cfg.company.logo_url} alt="Company logo" className="h-16 object-contain" /></div>}
+          {cfg.company?.logo_url && <div className="md:col-span-2"><img src={resolveAssetUrl(cfg.company.logo_url)} alt="Company logo" className="h-16 object-contain" /></div>}
         </div>
       )}
 
@@ -265,7 +266,7 @@ function PoliciesEditor({ policies, policyKey, setPolicyKey, onChange, onUpload,
         </Field>
         {policy.image && (
           <div className="md:col-span-2">
-            <img src={policy.image} alt="" className="h-40 w-full object-cover border border-slate-200" />
+            <img src={resolveAssetUrl(policy.image)} alt="" className="h-40 w-full object-cover border border-slate-200" />
           </div>
         )}
       </div>
@@ -359,7 +360,7 @@ function ListEditor({ items, onChange, newItem, fields, onUpload, uploading }) {
                   )}
                 </>
               )}
-              {f.preview && it[f.key] && <img src={it[f.key]} alt="" className="mt-2 h-24 w-full object-cover border border-slate-200" />}
+              {f.preview && it[f.key] && <img src={resolveAssetUrl(it[f.key])} alt="" className="mt-2 h-24 w-full object-cover border border-slate-200" />}
             </div>
           ))}
         </div>
