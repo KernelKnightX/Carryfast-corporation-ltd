@@ -12,13 +12,34 @@ const normalizePageHeroes = (pageHeroes = {}) => {
   return next;
 };
 
+const normalizeHeroSlides = (slides = []) => slides.map((slide) => {
+  const searchable = [
+    slide.overline,
+    ...(slide.title_lines || []),
+    slide.title_span,
+    slide.subtitle,
+  ].join(" ");
+
+  if (!/\bAEO\b|Authorised Economic Operator/i.test(searchable)) {
+    return slide;
+  }
+
+  return {
+    ...slide,
+    overline: "Customs Expertise · Madhya Pradesh",
+    title_lines: ["Customs Clearance", "with Proven Expertise"],
+    title_span: "across India.",
+    subtitle: "Three decades of customs operations, documentation accuracy, and port-level coordination help importers and exporters move cargo with confidence.",
+  };
+});
+
 // Fallback used only while the first fetch is in-flight; matches backend DEFAULT.
 const FALLBACK = {
   company: {
     name: "Carry Fast Corporation",
     short: "Carry Fast",
     tagline: "Custom Broker · Est. 1995",
-    logo_url: "/logos/MAIN LOGO.png",
+    logo_url: "/logos/CFC Logo Only-Photoroom.png",
     logo_url_inverted: "/logos/CFC Logo Reverse (1).png",
   },
   contact: {
@@ -49,10 +70,10 @@ const FALLBACK = {
     },
     {
       image: "/logos/Truck2nd slide.webp",
-      overline: "AEO Certified · Indian Customs",
-      title_lines: ["The Only AEO-Certified Customs"],
-      title_span: "Expert in MP.",
-      subtitle: "AEO certification by Indian Customs — audited for compliance, financial soundness and operational reliability. Our clients work with a partner whose standards are independently verified.",
+      overline: "Customs Expertise · Madhya Pradesh",
+      title_lines: ["Customs Clearance", "with Proven Expertise"],
+      title_span: "across India.",
+      subtitle: "Three decades of customs operations, documentation accuracy, and port-level coordination help importers and exporters move cargo with confidence.",
     },
     {
       image: "/logos/logistic3.jpg",
@@ -82,8 +103,8 @@ const FALLBACK = {
     subtitle: "Client feedback from importers and exporters who trust Carry Fast for customs clearance and trade compliance.",
     items: [
       { quote: "We have worked with Carry Fast Corporation since last 30 years across imports of machinery and raw material. Their team understands customs requirements thoroughly and consistently delivers timely clearances.", author: "— Bridgestone India", company: "Bridgestone India" },
-      { quote: "Carry Fast Corporation has been a dependable Customs broker for our business. Documentation is handled accurately, communication is prompt, and shipment status is always clear. We handle regular imports through multiple ports, and Carry Fast Corporation has consistently maintained the same level of service and attention to detail across every shipment.", author: "— LiuGong India", company: "LiuGong India" },
-      { quote: "Their knowledge of customs procedures has helped us avoid unnecessary delays on multiple shipments. We value their practical approach and responsiveness.", author: "— HEG Ltd", company: "HEG Ltd" },
+      { quote: "Carry Fast Corporation has been a dependable Customs broker for our business. Documentation is handled accurately, communication is prompt, and shipment status is always clear.", author: "— LiuGong India", company: "LiuGong India" },
+      { quote: "Their knowledge of customs procedures has helped us avoid unnecessary delays on multiple shipments. We value their practical approach and responsiveness.", author: "— HEG Ltd", company: "HEG" },
       { quote: "Professional, responsive, and reliable. Their team has supported our customs clearance requirements efficiently and continues to be a trusted logistics partner.", author: "— Tata International", company: "Tata International" },
       { quote: "The team understands the urgency of commercial cargo. Whenever issues arise, they work quickly to resolve them and keep the clearance process moving.", author: "— Shivani Detergents", company: "Shivani Detergents Pvt Ltd" },
       { quote: "Carry Fast Corporation combines experience with accountability. Their guidance on documentation and compliance has been valuable to our import operations.", author: "— Swara Baby Products", company: "Swara Baby Products Ltd" },
@@ -111,6 +132,7 @@ export const SiteConfigProvider = ({ children }) => {
         ...data,
         contact: { ...FALLBACK.contact, ...(data.contact || {}) },
         company: { ...FALLBACK.company, ...(data.company || {}) },
+        hero_slides: normalizeHeroSlides(data.hero_slides || FALLBACK.hero_slides),
         page_heroes: normalizePageHeroes({ ...FALLBACK.page_heroes, ...(data.page_heroes || {}) }),
         testimonials: { ...FALLBACK.testimonials, ...(data.testimonials || {}) },
         policies: { ...FALLBACK.policies, ...(data.policies || {}) },

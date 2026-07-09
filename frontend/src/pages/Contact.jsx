@@ -2,6 +2,7 @@ import { Phone, Mail, MapPin, Clock, MessageSquare, Globe, AlertCircle } from "l
 import ContactForm from "@/components/ContactForm";
 import SEO from "@/components/SEO";
 import PageHero from "@/components/PageHero";
+import SocialLinks from "@/components/SocialLinks";
 import { useSiteConfig } from "@/contexts/SiteConfigContext";
 
 const INFO_CARDS = [
@@ -82,25 +83,7 @@ export default function Contact() {
                   <div className="text-navy-900">{c.working_hours}</div>
                 </div>
               </div>
-              {cfg.social && (cfg.social.instagram || cfg.social.facebook || cfg.social.linkedin) && (
-                <div className="flex flex-wrap gap-3 mt-8">
-                  {cfg.social.instagram && (
-                    <a href={cfg.social.instagram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-navy-900 hover:text-gold-500">
-                      Instagram
-                    </a>
-                  )}
-                  {cfg.social.facebook && (
-                    <a href={cfg.social.facebook} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-navy-900 hover:text-gold-500">
-                      Facebook
-                    </a>
-                  )}
-                  {cfg.social.linkedin && (
-                    <a href={cfg.social.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-navy-900 hover:text-gold-500">
-                      LinkedIn
-                    </a>
-                  )}
-                </div>
-              )}
+              <SocialLinks social={cfg.social} showUnavailable className="mt-8" />
             </div>
           </div>
 

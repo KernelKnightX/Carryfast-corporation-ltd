@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useSiteConfig } from "@/contexts/SiteConfigContext";
+import { useEffect, useState } from "react";
+import { useSiteConfig, useSiteConfigCtx } from "@/contexts/SiteConfigContext";
 import { resolveAssetUrl } from "@/lib/assets";
 
 export const Logo = ({
@@ -14,6 +14,8 @@ export const Logo = ({
   gapClassName = "gap-2",
 }) => {
   const cfg = useSiteConfig();
+  const siteConfigCtx = useSiteConfigCtx();
+  const configLoaded = siteConfigCtx?.loaded ?? true;
   const [failed, setFailed] = useState(false);
 
   const defaultLogo = "/logos/CFC Logo Only-Photoroom.png";
@@ -25,6 +27,10 @@ export const Logo = ({
 
   const fallbackUrl = inverted ? invertedLogo : defaultLogo;
   const url = failed ? fallbackUrl : resolveAssetUrl(configuredUrl);
+
+  useEffect(() => {
+    setFailed(false);
+  }, [configuredUrl]);
 
   const defaultSizeClass =
     !height && !width
@@ -51,7 +57,9 @@ export const Logo = ({
     <a
       href="/"
       data-testid="brand-logo"
-      className={`flex items-center ${gapClassName} ${className}`}
+      className={`flex items-center ${gapClassName} ${
+        configLoaded ? "visible" : "invisible"
+      } ${className}`}
     >
       {url ? (
         <img

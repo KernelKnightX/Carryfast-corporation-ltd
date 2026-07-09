@@ -34,8 +34,7 @@ export default function HeroSlider() {
 
   const kpiStrip = [
     ...stats.slice(0, 3).map((st) => ({ v: `${formatStat(st.value)}${st.suffix || ""}`, l: (st.label || "").split(" ").slice(0, 2).join(" ") })),
-    { v: "AEO", l: "Certified" },
-  ].slice(0, 4);
+  ];
 
   return (
     <section
@@ -147,7 +146,7 @@ export default function HeroSlider() {
           </div>
         </div>
         <div className="bg-navy-950/85 backdrop-blur border-t border-white/10">
-          <div className="container-x grid grid-cols-4">
+          <div className="container-x grid grid-cols-3">
             {kpiStrip.map((k, idx) => (
               <div key={idx} className="py-4 px-3 text-center sm:text-left border-r border-white/10 last:border-r-0" data-testid={`hero-kpi-${idx}`}>
                 <div className="font-display font-extrabold text-base sm:text-xl lg:text-2xl text-gold-500 tracking-tight">{k.v}</div>
