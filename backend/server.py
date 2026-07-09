@@ -296,7 +296,7 @@ DEFAULT_SITE_CONFIG = {
         "name": "Carry Fast Corporation",
         "short": "Carry Fast",
         "tagline": "Custom Broker · Est. 1995",
-        "logo_url": "/CFC_Logo-removebg-preview.png",
+        "logo_url": "/logos/CFC Logo Only-Photoroom.png",
     },
     "contact": {
         "phone_primary": "+91 731 2524079",
@@ -318,7 +318,7 @@ DEFAULT_SITE_CONFIG = {
     ],
     "hero_slides": [
         {"image": "/logos/Logistics-in-India.jpg", "overline": "Customs Clearance · Since 1995", "title_lines": ["Customs Clearance.", "Backed by 30 Years"], "title_span": "of Operations.", "subtitle": "India's import and export procedures are detailed, time-sensitive, and constantly evolving. Carry Fast Corporation has managed this process for Indian businesses since 1995."},
-        {"image": "/logos/logistic1.jpg", "overline": "AEO Certified · Indian Customs", "title_lines": ["The Only AEO-Certified", "Customs Intermediary"], "title_span": "in Madhya Pradesh.", "subtitle": "AEO certification by Indian Customs — audited for compliance, financial soundness and operational reliability. Our clients work with a partner whose standards are independently verified."},
+        {"image": "/logos/logistic1.jpg", "overline": "Customs Expertise · Madhya Pradesh", "title_lines": ["Customs Clearance", "with Proven Expertise"], "title_span": "across India.", "subtitle": "Three decades of customs operations, documentation accuracy, and port-level coordination help importers and exporters move cargo with confidence."},
         {"image": "/logos/logistic3.jpg", "overline": "12,000+ Shipments · 99.5% On-Time", "title_lines": ["Cargo clears.", "Operations"], "title_span": "never wait.", "subtitle": "Bill of Entry filed the same day. Examination handled at the port by our team. Documentation pre-validated before submission. A 99.5% on-time rate maintained year after year."},
         {"image": "/logos/logistic4.jpg", "overline": "CONCOR Best Customs Broker · Since 1997", "title_lines": ["Recognised by CONCOR", "every year"], "title_span": "since 1997.", "subtitle": "An unbroken record of recognition across nearly three decades — awarded annually by Container Corporation of India for consistent operational performance."},
     ],
@@ -357,17 +357,45 @@ DEFAULT_SITE_CONFIG = {
 }
 
 
+def normalize_hero_slides(slides):
+    normalized = []
+    for slide in slides or []:
+        searchable = " ".join([
+            str(slide.get("overline", "")),
+            *[str(line) for line in slide.get("title_lines", [])],
+            str(slide.get("title_span", "")),
+            str(slide.get("subtitle", "")),
+        ])
+        if "AEO" in searchable.upper() or "AUTHORISED ECONOMIC OPERATOR" in searchable.upper():
+            normalized.append({
+                **slide,
+                "overline": "Customs Expertise · Madhya Pradesh",
+                "title_lines": ["Customs Clearance", "with Proven Expertise"],
+                "title_span": "across India.",
+                "subtitle": "Three decades of customs operations, documentation accuracy, and port-level coordination help importers and exporters move cargo with confidence.",
+            })
+        else:
+            normalized.append(slide)
+    return normalized
+
+
+def normalize_site_config(cfg):
+    cfg = {**cfg}
+    cfg["hero_slides"] = normalize_hero_slides(cfg.get("hero_slides", []))
+    return cfg
+
+
 # ---------- Public: Site Config ----------
 @api_router.get("/site-config")
 async def get_site_config():
     try:
         cfg = await db.site_config.find_one({"_id": "singleton"}, {"_id": 0})
         if not cfg:
-            return DEFAULT_SITE_CONFIG
-        return cfg
+            return normalize_site_config(DEFAULT_SITE_CONFIG)
+        return normalize_site_config(cfg)
     except Exception as e:
         logger.warning(f"Returning default site config because MongoDB is unavailable: {e}")
-        return DEFAULT_SITE_CONFIG
+        return normalize_site_config(DEFAULT_SITE_CONFIG)
 
 
 # ---------- Public Blog ----------
